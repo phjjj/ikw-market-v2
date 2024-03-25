@@ -21,6 +21,8 @@ module.exports = {
   plugins: ["@typescript-eslint", "react", "react-hooks", "jsx-a11y", "import"],
   rules: {
     "no-param-reassign": ["error", { props: false }],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error",
   },
 
   parserOptions: { project: `./tsconfig.json` },
