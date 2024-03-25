@@ -27,6 +27,14 @@ function MainLayout() {
             </li>
             <li>
               <NavLink
+                to="/profile/1"
+                className={({ isActive }) => (isActive ? "isActive" : "")}
+              >
+                프로필
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/upload"
                 className={({ isActive }) => (isActive ? "isActive" : "")}
               >
