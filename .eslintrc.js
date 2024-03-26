@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     "no-param-reassign": ["error", { props: false }],
     "no-use-before-define": "off",
+    "react/require-default-props": "off",
     "@typescript-eslint/no-use-before-define": "error",
   },
 
