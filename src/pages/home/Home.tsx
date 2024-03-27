@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const DUMMY_PRODUCTS = [{ id: "p1" }, { id: "p2" }, { id: "p3" }];

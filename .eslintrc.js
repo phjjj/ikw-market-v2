@@ -14,12 +14,16 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:import/errors",
     "plugin:import/warnings",
   ],
   plugins: ["@typescript-eslint", "react", "react-hooks", "jsx-a11y", "import"],
   rules: {
     "no-param-reassign": ["error", { props: false }],
+    "no-use-before-define": "off",
+    "react/require-default-props": "off",
+    "@typescript-eslint/no-use-before-define": ["error", { variables: false }],
   },
 
   parserOptions: { project: `./tsconfig.json` },
