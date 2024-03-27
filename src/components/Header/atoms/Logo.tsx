@@ -2,12 +2,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import LogoImg from "../../../assets/logo/logo.png";
 
-const LogoLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
 function Logo() {
   return (
     <LogoLink to="/">
@@ -17,4 +11,9 @@ function Logo() {
   );
 }
 
+const LogoLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
 export default Logo;

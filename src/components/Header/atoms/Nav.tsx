@@ -11,6 +11,32 @@ type ItemType = {
   to: string;
 };
 
+function Nav({ children }: Props) {
+  return <Container>{children}</Container>;
+}
+
+function List({ children }: Props) {
+  return <Ul>{children}</Ul>;
+}
+
+function Item({ body, to }: ItemType) {
+  return (
+    <Li>
+      <NavLink to={to}>{body}</NavLink>
+    </Li>
+  );
+}
+
+// 로그인 Button은
+function LoginButton() {
+  const [isLogin, setIsLogin] = useState(false);
+  return (
+    <Button onClick={() => setIsLogin(!isLogin)}>
+      {isLogin ? <span>로그아웃</span> : <span>로그인</span>}
+    </Button>
+  );
+}
+
 const Container = styled.nav`
   display: flex;
   align-items: center;
@@ -30,34 +56,10 @@ const Li = styled.li`
 
 const Button = styled.button`
   border: none;
+  background-color: #fff;
   font-size: 16px;
   cursor: pointer;
 `;
-
-function Nav({ children }: Props) {
-  return <Container>{children}</Container>;
-}
-
-function List({ children }: Props) {
-  return <Ul>{children}</Ul>;
-}
-
-function Item({ body, to }: ItemType) {
-  return (
-    <Li>
-      <NavLink to={to}>{body}</NavLink>
-    </Li>
-  );
-}
-
-function LoginButton() {
-  const [isLogin, setIsLogin] = useState(false);
-  return (
-    <Button onClick={() => setIsLogin(!isLogin)}>
-      {isLogin ? <span>로그아웃</span> : <span>로그인</span>}
-    </Button>
-  );
-}
 
 Nav.List = List;
 Nav.Item = Item;

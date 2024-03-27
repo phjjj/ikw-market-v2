@@ -23,7 +23,7 @@ module.exports = {
     "no-param-reassign": ["error", { props: false }],
     "no-use-before-define": "off",
     "react/require-default-props": "off",
-    "@typescript-eslint/no-use-before-define": "error",
+    "@typescript-eslint/no-use-before-define": ["error", { variables: false }],
   },
 
   parserOptions: { project: `./tsconfig.json` },
