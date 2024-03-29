@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 type BodyType = {
-  body: string;
+  body: number;
 };
 
 function Price({ body }: BodyType) {
