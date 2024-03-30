@@ -27,5 +27,6 @@ const HeaderLayout = styled.header`
   width: 100%;
   justify-content: space-between;
   padding: 0.45rem 1.15rem;
+  z-index: 999;
 `;
 export default Header;
