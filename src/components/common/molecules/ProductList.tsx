@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import ProductCard from "../../../components/ProductCard/ProductCard";
+import ProductCard from "../atoms/ProductCard/ProductCard";
 
 interface IProductData {
   id: number;
