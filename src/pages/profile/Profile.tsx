@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import UserInfo from "./molecules/UserInfo";
+import ProductList from "../../components/common/molecules/ProductList";
 // import ProductList from "./molecules/ProductList";
 
 function ProfilePage() {
@@ -50,10 +51,15 @@ function ProfilePage() {
         <UserInfo.Name body={DUMMY_USER_DATA.name} />
         <UserInfo.ModifyButton />
       </UserInfo>
+      <hr style={{ width: "100%" }} />
       <h2>내가 올린 물건</h2>
-      {/* <ProductList productData={DUMMY_USER_DATA.products} /> */}
+      <ProductList productData={DUMMY_USER_DATA.products} />
     </ProfilePageWrapper>
   );
 }
-const ProfilePageWrapper = styled.div``;
+const ProfilePageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 export default ProfilePage;

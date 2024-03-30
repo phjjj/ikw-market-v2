@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Title from "./atoms/Title";
-import ProductList from "./molecules/ProductList";
+import ProductList from "../../components/common/molecules/ProductList";
 
 const DUMMY_PRODUCTS = [
   {
