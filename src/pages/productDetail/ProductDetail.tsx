@@ -1,4 +1,4 @@
-function ProductPage() {
+function ProductDetail() {
   return (
     <div>
       <h1>상품 상세정보 페이지</h1>
@@ -6,4 +6,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default ProductDetail;
