@@ -4,9 +4,9 @@ type PriceType = {
   body: number;
 };
 function Price({ body }: PriceType) {
-  return <PriceContainer>{body}원</PriceContainer>;
+  return <PriceWrapper>{body}+원</PriceWrapper>;
 }
-const PriceContainer = styled.span`
+const PriceWrapper = styled.span`
   font-weight: bold;
 `;
 export default Price;

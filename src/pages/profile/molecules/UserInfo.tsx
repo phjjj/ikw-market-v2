@@ -9,10 +9,10 @@ interface Props {
 }
 
 function UserInfo({ children }: Props) {
-  return <UserInfoWrapper>{children}</UserInfoWrapper>;
+  return <UserInfoContainer>{children}</UserInfoContainer>;
 }
 
-const UserInfoWrapper = styled.div`
+const UserInfoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

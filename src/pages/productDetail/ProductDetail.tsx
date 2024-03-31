@@ -20,7 +20,7 @@ function ProductDetail() {
   };
   // TODO 블로그쓰기
   return (
-    <ProductDetailContainer>
+    <ProductDetailWrapper>
       <Image images={DUMMY_PRODUCT_DATA.images} />
       <UserName body={DUMMY_PRODUCT_DATA.name} />
       <hr style={{ width: "100%", margin: "0" }} />
@@ -30,11 +30,11 @@ function ProductDetail() {
         <ProductInfo.Location body={DUMMY_PRODUCT_DATA.location} />
         <ProductInfo.Description body={DUMMY_PRODUCT_DATA.description} />
       </ProductInfo>
-    </ProductDetailContainer>
+    </ProductDetailWrapper>
   );
 }
 
-const ProductDetailContainer = styled.main`
+const ProductDetailWrapper = styled.main`
   display: flex;
   flex-direction: column;
   /* background-color: pink; */

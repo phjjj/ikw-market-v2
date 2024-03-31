@@ -5,10 +5,10 @@ type BodyType = {
 };
 
 function Title({ body }: BodyType) {
-  return <TitleContainer>{body}</TitleContainer>;
+  return <TitleWrapper>{body}</TitleWrapper>;
 }
 
-const TitleContainer = styled.h3`
+const TitleWrapper = styled.h3`
   margin: 0;
 `;
 

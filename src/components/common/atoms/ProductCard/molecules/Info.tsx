@@ -6,10 +6,10 @@ interface Props {
 }
 
 function Info({ children }: Props) {
-  return <InfoWrapper>{children}</InfoWrapper>;
+  return <InfoContainer>{children}</InfoContainer>;
 }
 
-const InfoWrapper = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;

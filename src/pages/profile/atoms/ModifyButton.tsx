@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 function ModifyButton() {
-  return <ButtonContainer>프로필 수정</ButtonContainer>;
+  return <ButtonWrapper>프로필 수정</ButtonWrapper>;
 }
 
-const ButtonContainer = styled.button`
+const ButtonWrapper = styled.button`
   border: none;
   cursor: pointer;
   color: #808080;

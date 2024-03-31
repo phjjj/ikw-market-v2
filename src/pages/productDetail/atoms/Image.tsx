@@ -21,16 +21,16 @@ function Image({ images }: ImageType) {
     setVisibel((prev) => (prev === 0 ? 0 : prev - 1));
 
   return (
-    <ImageWrapper>
+    <ImageContainer>
       <MdOutlineArrowBackIosNew onClick={onClickPrevImage} size={30} />
       {images.map((image, idx) =>
-        idx === visibel ? <ImageContainer key={image} src={image} /> : null,
+        idx === visibel ? <ImageWrapper key={image} src={image} /> : null,
       )}
       <MdOutlineArrowForwardIos onClick={onClickNextImage} size={30} />
-    </ImageWrapper>
+    </ImageContainer>
   );
 }
-const ImageWrapper = styled.div`
+const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
@@ -38,7 +38,7 @@ const ImageWrapper = styled.div`
     cursor: pointer;
   }
 `;
-const ImageContainer = styled.img`
+const ImageWrapper = styled.img`
   width: 674px;
   height: 674px;
   border-radius: 10px;

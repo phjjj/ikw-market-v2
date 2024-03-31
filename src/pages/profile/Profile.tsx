@@ -45,7 +45,7 @@ function ProfilePage() {
     ],
   };
   return (
-    <ProfilePageWrapper>
+    <ProfilePageContainer>
       <UserInfo>
         <UserInfo.Image src={DUMMY_USER_DATA.image} />
         <UserInfo.Name body={DUMMY_USER_DATA.name} />
@@ -54,10 +54,10 @@ function ProfilePage() {
       <hr style={{ width: "100%" }} />
       <h2>내가 올린 물건</h2>
       <ProductList productData={DUMMY_USER_DATA.products} />
-    </ProfilePageWrapper>
+    </ProfilePageContainer>
   );
 }
-const ProfilePageWrapper = styled.div`
+const ProfilePageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

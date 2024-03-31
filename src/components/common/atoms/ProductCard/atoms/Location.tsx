@@ -5,7 +5,7 @@ type BodyType = {
 };
 
 function Location({ body }: BodyType) {
-  return <LocationContainer>{body}</LocationContainer>;
+  return <LocationWrapper>{body}</LocationWrapper>;
 }
-const LocationContainer = styled.span``;
+const LocationWrapper = styled.span``;
 export default Location;

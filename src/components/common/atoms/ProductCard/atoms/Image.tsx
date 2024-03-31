@@ -4,10 +4,10 @@ type ImageType = {
   src: string;
 };
 function Image({ src }: ImageType) {
-  return <ImageContainer src={src} />;
+  return <ImageWrapper src={src} />;
 }
 
-const ImageContainer = styled.img`
+const ImageWrapper = styled.img`
   width: 199px;
   height: 184px;
   border-radius: 10px 10px 0px 0px;

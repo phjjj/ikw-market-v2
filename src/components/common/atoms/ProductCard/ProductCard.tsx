@@ -11,10 +11,10 @@ interface Props {
 }
 
 function ProductCard({ children }: Props) {
-  return <ProductCardWrapper>{children}</ProductCardWrapper>;
+  return <ProductCardContainer>{children}</ProductCardContainer>;
 }
 
-const ProductCardWrapper = styled.li`
+const ProductCardContainer = styled.li`
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 10px;
