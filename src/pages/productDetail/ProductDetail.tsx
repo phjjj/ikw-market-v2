@@ -18,7 +18,7 @@ function ProductDetail() {
       "사진기팝니다.사진기팝니다.사사진기팝니다.사진기팝니다.사사진기팝니다.사진기팝니다.사사진기팝니다.사진기팝니다.사사진기팝니다.사진기팝니다.사사진기팝니다.사진기팝니다.사",
     name: "카리나",
   };
-  // TODO 블로그쓰기
+
   return (
     <ProductDetailWrapper>
       <Image images={DUMMY_PRODUCT_DATA.images} />

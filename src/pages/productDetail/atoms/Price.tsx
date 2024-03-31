@@ -4,7 +4,7 @@ type PriceType = {
   body: number;
 };
 function Price({ body }: PriceType) {
-  return <PriceWrapper>{body}+원</PriceWrapper>;
+  return <PriceWrapper>{body}원</PriceWrapper>;
 }
 const PriceWrapper = styled.span`
   font-weight: bold;
