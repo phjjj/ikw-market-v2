@@ -3,16 +3,30 @@ import {
   MdOutlineArrowBackIosNew,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
+import { useState } from "react";
 
 type ImageType = {
-  src: string;
+  images: string[];
 };
-function Image({ src }: ImageType) {
+
+function Image({ images }: ImageType) {
+  const [visibel, setVisibel] = useState(0);
+
+  const onClickNextImage = () =>
+    setVisibel((prev) =>
+      prev === images.length - 1 ? images.length - 1 : prev + 1,
+    );
+
+  const onClickPrevImage = () =>
+    setVisibel((prev) => (prev === 0 ? 0 : prev - 1));
+
   return (
     <ImageWrapper>
-      <MdOutlineArrowBackIosNew size={30} />
-      <ImageContainer src={src} />
-      <MdOutlineArrowForwardIos size={30} />
+      <MdOutlineArrowBackIosNew onClick={onClickPrevImage} size={30} />
+      {images.map((image, idx) =>
+        idx === visibel ? <ImageContainer key={image} src={image} /> : null,
+      )}
+      <MdOutlineArrowForwardIos onClick={onClickNextImage} size={30} />
     </ImageWrapper>
   );
 }
