@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
-import Title from "../atoms/Title";
-import Price from "../atoms/Price";
-import Location from "../atoms/Location";
-import Description from "../atoms/Description";
+import Title from "./atoms/Title";
+import Price from "./atoms/Price";
+import Location from "./atoms/Location";
+import Description from "./atoms/Description";
 
 interface Props {
   children: ReactNode;
