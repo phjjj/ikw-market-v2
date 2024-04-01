@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef } from "react";
 import styled from "styled-components";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { BiImageAdd } from "react-icons/bi";
-import Input from "../../common/atoms/Input/Input";
+import { useState } from "react";
 import UploadImagePreview from "./UploadImagePreview";
+import FileInput from "../atoms/file/FileInput";
 
 const UploadImageInputLayout = styled.div`
   display: flex;
@@ -20,44 +18,15 @@ const UploadImageInputLayout = styled.div`
   }
 `;
 
-const Button = styled.button`
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  color: gray;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 200px;
-  height: 200px;
-  flex: 0 0 auto;
-`;
-
-function UploadImageInput({ fileList }: any) {
-  const uploadImgInput = useRef() as any;
-
-  const onChangeImgInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-  };
-
-  // const resizeImage = () => {};
-
+function UploadImageInput() {
+  const [fileList, setFileList] = useState<string[]>([]);
   const onDeleteImage = async () => {};
+
   return (
     <UploadImageInputLayout>
-      <Input
-        onChange={onChangeImgInput}
-        ref={uploadImgInput}
-        style={{ display: "none" }}
-        type="file"
-        accept="image/jpg, image/jpeg, image/png"
-      />
-      <Button>
-        <BiImageAdd size={50} />
-        상품 이미지 등록
-      </Button>
+      <FileInput setFileList={setFileList} />
       <div style={{ display: "flex" }}>
-        {fileList.map((image: string, idx: number) => (
+        {fileList?.map((image: string, idx: number) => (
           <UploadImagePreview
             onDelete={() => onDeleteImage()}
             // eslint-disable-next-line react/no-array-index-key
