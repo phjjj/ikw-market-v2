@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Text from "../../components/common/atoms/Text/Text";
-import UploadForm from "../../components/Form/upload/UploadForm";
+import UploadForm from "../../components/Form/organisms/UploadForm";
 
 export const UploadLayout = styled.div`
   display: flex;

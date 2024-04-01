@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 interface InputProps {
   labelText: string;
@@ -19,11 +20,10 @@ const InputWrapper = styled.section`
 `;
 
 const Textarea = styled.textarea`
-  height: 42px;
   border-radius: 10px;
   border: 1px solid rgb(204, 204, 204);
   padding: 1rem 1rem 0 0.3rem;
-  height: 240px;
+  resize: none;
 `;
 
 function UploadTextarea({
@@ -43,9 +43,10 @@ function UploadTextarea({
         defaultValue={value}
         maxLength={maxLength}
         onChange={(event) => onChangeInputValue(event.target.value)}
+        rows={6}
       />
     </InputWrapper>
   );
 }
 
-export default UploadTextarea;
+export default React.memo(UploadTextarea);
