@@ -21,6 +21,5 @@ const Wrapper = styled.button`
   font-family: Arial;
   font-size: 1.1rem;
   font-weight: 600;
-  margin: auto;
 `;
 export default DefaultButton;
