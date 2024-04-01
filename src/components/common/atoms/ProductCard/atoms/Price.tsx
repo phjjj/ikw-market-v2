@@ -5,8 +5,8 @@ type BodyType = {
 };
 
 function Price({ body }: BodyType) {
-  return <PriceContainer>{body}</PriceContainer>;
+  return <PriceWrapper>{body}</PriceWrapper>;
 }
-const PriceContainer = styled.span``;
+const PriceWrapper = styled.span``;
 
 export default Price;

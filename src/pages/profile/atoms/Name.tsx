@@ -4,7 +4,7 @@ type NameType = {
   body: string;
 };
 function Name({ body }: NameType) {
-  return <NameContainer>{body}</NameContainer>;
+  return <NameWrapper>{body}</NameWrapper>;
 }
-const NameContainer = styled.h1``;
+const NameWrapper = styled.h1``;
 export default Name;
