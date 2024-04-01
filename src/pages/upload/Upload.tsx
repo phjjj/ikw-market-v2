@@ -61,6 +61,7 @@ function UploadPage() {
         상품 등록
       </Text>
       <UploadForm>
+        <UploadForm.Image />
         {inputList.map((item, index) => (
           <UploadForm.Input
             // eslint-disable-next-line react/no-array-index-key
