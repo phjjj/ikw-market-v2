@@ -9,24 +9,6 @@ interface InputProps {
   value: string;
 }
 
-const Label = styled.label`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.3rem;
-`;
-
-const InputWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  height: 42px;
-  border-radius: 10px;
-  border: 1px solid rgb(204, 204, 204);
-  padding: 0 1rem;
-`;
-
 function UploadInput({
   labelText,
   maxLength,
@@ -52,5 +34,23 @@ function UploadInput({
     </InputWrapper>
   );
 }
+
+const Label = styled.label`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+`;
+
+const InputWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 0 1rem;
+`;
 
 export default UploadInput;

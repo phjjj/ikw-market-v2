@@ -8,24 +8,6 @@ interface InputProps {
   value: string;
 }
 
-const Label = styled.label`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.3rem;
-`;
-
-const InputWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Textarea = styled.textarea`
-  border-radius: 10px;
-  border: 1px solid rgb(204, 204, 204);
-  padding: 1rem 1rem 0 0.3rem;
-  resize: none;
-`;
-
 function UploadTextarea({
   labelText,
   maxLength,
@@ -48,5 +30,23 @@ function UploadTextarea({
     </InputWrapper>
   );
 }
+
+const Label = styled.label`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+`;
+
+const InputWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Textarea = styled.textarea`
+  border-radius: 10px;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 1rem 1rem 0 0.3rem;
+  resize: none;
+`;
 
 export default React.memo(UploadTextarea);

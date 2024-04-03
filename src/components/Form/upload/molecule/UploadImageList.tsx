@@ -1,8 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from "styled-components";
 import { useState } from "react";
 import UploadImagePreview from "./UploadImagePreview";
 import FileInput from "../atoms/file/FileInput";
+
+function UploadImageList() {
+  const [fileList, setFileList] = useState<string[]>([]);
+  const onDeleteImage = async () => {};
+
+  return (
+    <UploadImageInputLayout>
+      <FileInput setFileList={setFileList} />
+      <div style={{ display: "flex" }}>
+        {fileList?.map((image: string) => (
+          <UploadImagePreview
+            onDelete={() => onDeleteImage()}
+            key={image}
+            image={image}
+          />
+        ))}
+      </div>
+    </UploadImageInputLayout>
+  );
+}
 
 const UploadImageInputLayout = styled.div`
   display: flex;
@@ -18,25 +37,4 @@ const UploadImageInputLayout = styled.div`
   }
 `;
 
-function UploadImageInput() {
-  const [fileList, setFileList] = useState<string[]>([]);
-  const onDeleteImage = async () => {};
-
-  return (
-    <UploadImageInputLayout>
-      <FileInput setFileList={setFileList} />
-      <div style={{ display: "flex" }}>
-        {fileList?.map((image: string, idx: number) => (
-          <UploadImagePreview
-            onDelete={() => onDeleteImage()}
-            // eslint-disable-next-line react/no-array-index-key
-            key={idx}
-            image={image}
-          />
-        ))}
-      </div>
-    </UploadImageInputLayout>
-  );
-}
-
-export default UploadImageInput;
+export default UploadImageList;

@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
-import UploadImage from "../molecule/UploadImage";
+import UploadImageList from "../molecule/UploadImageList";
 import UploadInput from "../atoms/Input/UploadInput";
 import UploadTextarea from "../atoms/textarea/UploadTextarea";
-import DefaultButton from "../../common/atoms/Button/DefaultButton";
+import DefaultButton from "../../../common/atoms/Button/DefaultButton";
 
 interface Props {
   children: ReactNode;
+}
+
+function UploadForm({ children }: Props) {
+  return <UploadFormLayout>{children}</UploadFormLayout>;
 }
 
 const UploadFormLayout = styled.form`
@@ -16,16 +20,7 @@ const UploadFormLayout = styled.form`
   color: #000;
 `;
 
-function UploadForm({ children }: Props) {
-  // eslint-disable-next-line consistent-return
-  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (!fileList.length) return alert("이미지가 없어요");
-  // };
-  return <UploadFormLayout>{children}</UploadFormLayout>;
-}
-
-UploadForm.Image = UploadImage;
+UploadForm.ImageList = UploadImageList;
 UploadForm.Input = UploadInput;
 UploadForm.Textarea = UploadTextarea;
 UploadForm.Button = DefaultButton;

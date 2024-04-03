@@ -1,21 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Text from "../../components/common/atoms/Text/Text";
-import UploadForm from "../../components/Form/organisms/UploadForm";
-
-export const UploadLayout = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 64px;
-  padding-bottom: 40px;
-  max-width: 680px;
-  margin: 0 auto;
-  gap: 10px;
-  @media screen and (max-width: 860px) {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-`;
+import UploadForm from "../../components/Form/upload/organisms/UploadForm";
+import Title from "../../components/common/atoms/Title/Title";
 
 function UploadPage() {
   const [inputList, setInputList] = useState([
@@ -49,19 +35,9 @@ function UploadPage() {
 
   return (
     <UploadLayout>
-      <Text
-        style={{
-          fontSize: "32px",
-          margin: "0 0 10px 0",
-          padding: "18px 0px 10px 0px;",
-          fontFamily: "GmarketSansMedium",
-          fontWeight: "bold",
-        }}
-      >
-        상품 등록
-      </Text>
+      <Title className="fs-xl text-center">상품등록</Title>
       <UploadForm>
-        <UploadForm.Image />
+        <UploadForm.ImageList />
         {inputList.map((item, index) => (
           <UploadForm.Input
             // eslint-disable-next-line react/no-array-index-key
@@ -87,5 +63,19 @@ function UploadPage() {
     </UploadLayout>
   );
 }
+
+export const UploadLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 64px;
+  padding-bottom: 40px;
+  max-width: 680px;
+  margin: 0 auto;
+  gap: 10px;
+  @media screen and (max-width: 860px) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+`;
 
 export default UploadPage;
