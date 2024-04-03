@@ -40,7 +40,6 @@ function UploadPage() {
         <UploadForm.ImageList />
         {inputList.map((item, index) => (
           <UploadForm.Input
-            // eslint-disable-next-line react/no-array-index-key
             key={item.label}
             type={item.type}
             labelText={item.label}
