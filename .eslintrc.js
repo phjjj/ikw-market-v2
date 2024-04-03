@@ -26,5 +26,7 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": ["error", { variables: false }],
   },
 
-  parserOptions: { project: `./tsconfig.json` },
+  parserOptions: {
+    project: `./tsconfig.json`,
+  },
 };

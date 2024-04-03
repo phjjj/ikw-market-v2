@@ -1,15 +1,12 @@
 import styled from "styled-components";
-import { ReactNode } from "react";
+
 import UploadImageList from "../molecule/UploadImageList";
 import UploadInput from "../atoms/Input/UploadInput";
 import UploadTextarea from "../atoms/textarea/UploadTextarea";
 import DefaultButton from "../../../common/atoms/Button/DefaultButton";
+import { ReactChildrenProps } from "../../../../types";
 
-interface Props {
-  children: ReactNode;
-}
-
-function UploadForm({ children }: Props) {
+function UploadForm({ children }: ReactChildrenProps) {
   return <UploadFormLayout>{children}</UploadFormLayout>;
 }
 
