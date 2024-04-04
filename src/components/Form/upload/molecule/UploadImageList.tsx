@@ -8,7 +8,7 @@ function UploadImageList() {
   const onDeleteImage = async () => {};
 
   return (
-    <UploadImageInputLayout>
+    <UploadImageInputContainer>
       <FileInput setFileList={setFileList} />
       <div style={{ display: "flex" }}>
         {fileList?.map((image: string) => (
@@ -19,11 +19,11 @@ function UploadImageList() {
           />
         ))}
       </div>
-    </UploadImageInputLayout>
+    </UploadImageInputContainer>
   );
 }
 
-const UploadImageInputLayout = styled.div`
+const UploadImageInputContainer = styled.div`
   display: flex;
   flex-wrap: no-wrap;
   overflow-x: auto;

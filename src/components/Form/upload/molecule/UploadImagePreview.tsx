@@ -9,14 +9,14 @@ type Props = {
 
 function UploadImagePreview({ image, onDelete }: Props) {
   return (
-    <UploadImagesLayout>
+    <UploadImagesContainer>
       <Image src={image} alt="업로드 한 이미지" />
       <TiDelete onClick={() => onDelete()} fill="fill" size={35} />
-    </UploadImagesLayout>
+    </UploadImagesContainer>
   );
 }
 
-const UploadImagesLayout = styled.div`
+const UploadImagesContainer = styled.div`
   position: relative;
   margin-right: 10px;
   svg {

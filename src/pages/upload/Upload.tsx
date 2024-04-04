@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import UploadForm from "../../components/Form/upload/organisms/UploadForm";
+import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title/Title";
 
 function UploadPage() {

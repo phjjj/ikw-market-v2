@@ -18,7 +18,7 @@ function UploadInput({
   value,
 }: InputProps) {
   return (
-    <InputWrapper>
+    <InputContainer>
       <Label htmlFor={labelText}>
         <span>{labelText}</span>
         {maxLength && <span>{`${value.length} / ${maxLength}`}</span>}
@@ -31,7 +31,7 @@ function UploadInput({
         onChange={(event) => onChangeInputValue(event.target.value)}
         defaultValue={value}
       />
-    </InputWrapper>
+    </InputContainer>
   );
 }
 
@@ -41,7 +41,7 @@ const Label = styled.label`
   margin-bottom: 0.3rem;
 `;
 
-const InputWrapper = styled.section`
+const InputContainer = styled.section`
   display: flex;
   flex-direction: column;
 `;
