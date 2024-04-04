@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
-import Title from "../../components/common/atoms/Title/Title";
+import Title from "../../components/common/atoms/Title";
 
 function UploadPage() {
   const [inputList, setInputList] = useState([
@@ -34,8 +34,8 @@ function UploadPage() {
   };
 
   return (
-    <UploadLayout>
-      <Title className="fs-xl text-center">상품등록</Title>
+    <UploadContainer>
+      <Title className="xl">상품등록</Title>
       <UploadForm>
         <UploadForm.ImageList />
         {inputList.map((item, index) => (
@@ -59,11 +59,11 @@ function UploadPage() {
         />
         <UploadForm.Button>등록 하기</UploadForm.Button>
       </UploadForm>
-    </UploadLayout>
+    </UploadContainer>
   );
 }
 
-export const UploadLayout = styled.div`
+export const UploadContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 64px;
