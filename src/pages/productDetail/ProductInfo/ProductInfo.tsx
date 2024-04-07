@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
-import Title from "./atoms/Title";
+import Name from "./atoms/Name";
 import Price from "./atoms/Price";
 import Location from "./atoms/Location";
 import Description from "./atoms/Description";
@@ -20,7 +20,7 @@ const ProductInfoContainer = styled.div`
   padding: 2rem 0px;
 `;
 
-ProductInfo.Title = Title;
+ProductInfo.Name = Name;
 ProductInfo.Price = Price;
 ProductInfo.Location = Location;
 ProductInfo.Description = Description;

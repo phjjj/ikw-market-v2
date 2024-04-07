@@ -46,7 +46,7 @@ function ProductDetail() {
       <UserName body={DUMMY_PRODUCT_DATA.name} />
       <hr style={{ width: "100%", margin: "0" }} />
       <ProductInfo>
-        <ProductInfo.Title body={DUMMY_PRODUCT_DATA.title} />
+        <ProductInfo.Name body={DUMMY_PRODUCT_DATA.title} />
         <ProductInfo.Price body={DUMMY_PRODUCT_DATA.price} />
         <ProductInfo.Location body={DUMMY_PRODUCT_DATA.location} />
         <ProductInfo.Description body={DUMMY_PRODUCT_DATA.description} />

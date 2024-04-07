@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Title from "./atoms/Title";
 import ProductList from "../../components/common/molecules/ProductList";
+import Title from "../../components/common/atoms/Title";
 
 const DUMMY_PRODUCTS = [
   {
@@ -56,7 +56,7 @@ const DUMMY_PRODUCTS = [
 function HomePage() {
   return (
     <HomePageWrapper>
-      <Title />
+      <Title className="xl">최근 중고거래 매물</Title>
       <ProductList productData={DUMMY_PRODUCTS} />
     </HomePageWrapper>
   );

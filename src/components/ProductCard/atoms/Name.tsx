@@ -4,12 +4,13 @@ type BodyType = {
   body: string;
 };
 
-function Title({ body }: BodyType) {
+function Name({ body }: BodyType) {
   return <TitleWrapper>{body}</TitleWrapper>;
 }
 
-const TitleWrapper = styled.h3`
-  margin: 0;
+const TitleWrapper = styled.span`
+  font-size: 18px;
+  font-weight: bold;
 `;
 
-export default Title;
+export default Name;

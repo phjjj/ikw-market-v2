@@ -1,29 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/prop-types */
 import React, { useRef } from "react";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { BiImageAdd } from "react-icons/bi";
 import styled from "styled-components";
-
-const Button = styled.button`
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  color: gray;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 200px;
-  height: 200px;
-  flex: 0 0 auto;
-`;
 
 function FileInput({
   setFileList,
 }: {
   setFileList: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const uploadImgInput = useRef() as any;
+  const uploadImgInput = useRef<HTMLInputElement>(null);
 
   const onChangeImgInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -37,7 +21,7 @@ function FileInput({
   };
 
   const onClickButton = () => {
-    uploadImgInput.current.click();
+    uploadImgInput.current?.click();
   };
 
   return (
@@ -56,5 +40,18 @@ function FileInput({
     </>
   );
 }
+
+const Button = styled.button`
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  color: gray;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 200px;
+  height: 200px;
+  flex: 0 0 auto;
+`;
 
 export default FileInput;

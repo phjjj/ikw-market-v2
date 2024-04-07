@@ -3,7 +3,6 @@ import styled from "styled-components";
 type Props = {
   src: string;
   alt: string;
-  style?: StyleProps;
 };
 
 type StyleProps = {
@@ -20,24 +19,16 @@ type StyleProps = {
   };
 };
 
-const ImageLayout = styled.img<StyleProps>`
-  flex: ${(props) => props.flex};
-  width: ${(props) => props.width};
-  margin: ${(props) => props.margin};
-  height: ${(props) => props.height};
-  border-radius: ${(props) => props.borderRadius};
-  object-fit: ${(props) => props.objectFit};
-  cursor: ${(props) => props.cursor};
-
-  @media screen and (max-width: 860px) {
-    width: ${(props) => props.mediaQuery?.width};
-    height: ${(props) => props.mediaQuery?.height};
-  }
-`;
-
-function Image({ style, src, alt }: Props) {
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <ImageLayout src={src} alt={alt} {...style} />;
+function Image({ src, alt }: Props) {
+  return <ImageLayout src={src} alt={alt} />;
 }
+
+const ImageLayout = styled.img<StyleProps>`
+  flex: 0 0 auto;
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+`;
 
 export default Image;
