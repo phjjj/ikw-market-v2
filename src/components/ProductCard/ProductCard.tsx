@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Image from "./atoms/Image";
 import Info from "./molecules/Info";
 import Price from "./atoms/Price";
-import Title from "./atoms/Title";
+import Name from "./atoms/Name";
 import Location from "./atoms/Location";
 
 interface Props {
@@ -24,7 +24,7 @@ const ProductCardContainer = styled.li`
 
 ProductCard.Image = Image;
 ProductCard.Info = Info;
-ProductCard.Title = Title;
+ProductCard.Name = Name;
 ProductCard.Price = Price;
 ProductCard.Location = Location;
 export default ProductCard;

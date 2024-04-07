@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import UserInfo from "./molecules/UserInfo";
 import ProductList from "../../components/common/molecules/ProductList";
-// import ProductList from "./molecules/ProductList";
+import Title from "../../components/common/atoms/Title";
 
 function ProfilePage() {
   // const DUMMY_PRODUCTS
@@ -52,7 +52,7 @@ function ProfilePage() {
         <UserInfo.ModifyButton />
       </UserInfo>
       <hr style={{ width: "100%" }} />
-      <h2>내가 올린 물건</h2>
+      <Title className="lg">내가 올린 물건</Title>
       <ProductList productData={DUMMY_USER_DATA.products} />
     </ProfilePageContainer>
   );

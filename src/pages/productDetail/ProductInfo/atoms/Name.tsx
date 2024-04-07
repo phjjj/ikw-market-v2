@@ -8,9 +8,9 @@ function Title({ body }: TitleType) {
   return <TitleWrapper>{body}</TitleWrapper>;
 }
 
-const TitleWrapper = styled.h3`
+const TitleWrapper = styled.span`
   font-weight: 300;
-  margin: 0;
+  font-size: 18px;
 `;
 
 export default Title;
