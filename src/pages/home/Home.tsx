@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ProductList from "../../components/common/molecules/ProductList";
+import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
 
 const DUMMY_PRODUCTS = [
@@ -28,7 +28,7 @@ const DUMMY_PRODUCTS = [
     location: "2호관",
   },
   {
-    id: 3,
+    id: 4,
     image:
       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
     title: "사진기3",
@@ -36,7 +36,7 @@ const DUMMY_PRODUCTS = [
     location: "2호관",
   },
   {
-    id: 3,
+    id: 5,
     image:
       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
     title: "사진기3",
@@ -44,7 +44,7 @@ const DUMMY_PRODUCTS = [
     location: "2호관",
   },
   {
-    id: 3,
+    id: 6,
     image:
       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
     title: "사진기3",

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import UserInfo from "./molecules/UserInfo";
-import ProductList from "../../components/common/molecules/ProductList";
+import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
 
 function ProfilePage() {

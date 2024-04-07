@@ -4,6 +4,7 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import { useState } from "react";
+import ProductImage from "../../../../components/common/atoms/ProductImage";
 
 type ImageType = {
   images: string[];
@@ -24,7 +25,9 @@ function Image({ images }: ImageType) {
     <ImageContainer>
       <MdOutlineArrowBackIosNew onClick={onClickPrevImage} size={30} />
       {images.map((image, idx) =>
-        idx === visibel ? <ImageWrapper key={image} src={image} /> : null,
+        idx === visibel ? (
+          <ProductImage className="lg" key={image} src={image} />
+        ) : null,
       )}
       <MdOutlineArrowForwardIos onClick={onClickNextImage} size={30} />
     </ImageContainer>
@@ -38,10 +41,5 @@ const ImageContainer = styled.div`
     cursor: pointer;
   }
 `;
-const ImageWrapper = styled.img`
-  width: 674px;
-  height: 674px;
-  border-radius: 10px;
-  object-fit: cover;
-`;
+
 export default Image;

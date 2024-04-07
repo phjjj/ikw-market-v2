@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
-import Image from "./ProductInfo/atoms/Image";
+import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
 
 function ProductDetail() {

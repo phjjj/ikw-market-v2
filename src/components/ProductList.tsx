@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import ProductCard from "../../ProductCard/ProductCard";
+import ProductCard from "./ProductCard/ProductCard";
 
 interface IProductData {
   id: number;
@@ -16,7 +16,7 @@ function ProductList({ productData }: { productData: IProductData[] }) {
       {productData.map((product) => (
         <ProductCard key={product.id}>
           <Link to={`products/${product.id}`}>
-            <ProductCard.Image src={product.image} />
+            <ProductCard.Image className="sm" src={product.image} />
           </Link>
           <ProductCard.Info>
             <ProductCard.Name body={product.title} />
