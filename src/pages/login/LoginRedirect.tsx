@@ -18,16 +18,15 @@ function LoginRedirect() {
           },
         )
         .then((result) => {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { access_token } = result.data;
-          localStorage.setItem("kakao_token", access_token);
+          const { access_token: accessToken } = result.data;
+          localStorage.setItem("kakao_token", accessToken);
           axios
             .post(
               "https://kapi.kakao.com/v2/user/me",
               {},
               {
                 headers: {
-                  Authorization: `Bearer ${access_token}`,
+                  Authorization: `Bearer ${accessToken}`,
                   "Content-type":
                     "application/x-www-form-urlencoded;charset=utf-8",
                 },
