@@ -6,6 +6,7 @@ import ProductPage from "../pages/productDetail/ProductDetail";
 import MainLayout from "../pages/MainLayout";
 import ProfilePage from "../pages/profile/Profile";
 import ErrorPage from "../pages/error/Error";
+import LoginRedirect from "../pages/login/LoginRedirect";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +17,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: "login",
-        element: <LoginPage />,
       },
       {
         path: "profile/:id",
@@ -42,6 +39,19 @@ const router = createBrowserRouter([
       {
         path: "products/:id",
         element: <ProductPage />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    children: [
+      {
+        index: true,
+        element: <LoginPage />,
+      },
+      {
+        path: "oauth",
+        element: <LoginRedirect />,
       },
     ],
   },
