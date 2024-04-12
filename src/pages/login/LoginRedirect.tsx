@@ -33,23 +33,9 @@ function LoginRedirect() {
               },
             )
             .then((kakaoResult: IKakaoUserResultData) => {
-              const {
-                data: {
-                  id: kakaoId,
-                  kakao_account: {
-                    email,
-                    profile: { nickname: name, profile_image_url: image },
-                  },
-                },
-              } = kakaoResult;
-
-              const userData = {
-                kakaoId,
-                email,
-                name,
-                image,
-              };
-              console.log(userData);
+              if (kakaoResult) {
+                console.log(kakaoResult);
+              }
             });
         });
     }
