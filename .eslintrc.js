@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     jest: true,
+    node: true,
   },
   extends: [
     "eslint:recommended",
@@ -24,6 +25,8 @@ module.exports = {
     "no-use-before-define": "off",
     "react/require-default-props": "off",
     "@typescript-eslint/no-use-before-define": ["error", { variables: false }],
+    "import/prefer-default-export": "off",
+    "no-multi-str": "off",
   },
 
   parserOptions: {

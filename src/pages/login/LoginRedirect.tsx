@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { IKakaoUserResultData } from "../../types";
+import { IKakaoUserResultData, IUser } from "../../types";
+import { userAddDoc } from "../../lib/db";
+import { useNavigate } from "react-router-dom";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
-  const grantType = "authorization_code";
+  const grantType = "authorization_code";  
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (code) {
       axios
@@ -32,10 +36,14 @@ function LoginRedirect() {
                 },
               },
             )
-            .then((kakaoResult: IKakaoUserResultData) => {
-              if (kakaoResult) {
-                console.log(kakaoResult);
-              }
+            .then(async (kakaoResult: IKakaoUserResultData) => {
+              const userObj: IUser = {
+                kakaoId: kakaoResult.data.id,
+                name: kakaoResult.data.kakao_account.profile.nickname,
+                image: kakaoResult.data.kakao_account.profile.profile_image_url,
+              };
+              const user: IUser = await userAddDoc(userObj);                                          
+              navigate("/", { state: user });
             });
         });
     }
