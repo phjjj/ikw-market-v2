@@ -1,4 +1,10 @@
-import { addDoc, collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { dbService } from "../firebase/config";
 import { IUser } from "../types";
 
@@ -11,10 +17,10 @@ export async function checkUser(kakaoId: number) {
       const user = userDoc.data();
       if (user.kakaoId === kakaoId) {
         checkUserObj = user;
-        throw new Error("Is User");        
+        throw new Error("Is User");
       }
     });
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
   return checkUserObj;
@@ -22,14 +28,14 @@ export async function checkUser(kakaoId: number) {
 
 export async function userAddDoc(userObj: IUser) {
   const checkUserObj = await checkUser(userObj.kakaoId);
-  
+
   if (!checkUserObj) {
-    let user: IUser = {
+    const user: IUser = {
       ...userObj,
       createdAt: Date.now(),
     };
 
-    const userDocument = await addDoc(collection(dbService, "users"), user);    
+    const userDocument = await addDoc(collection(dbService, "users"), user);
     const userDocumentRef = doc(dbService, "users", userDocument.id);
 
     await updateDoc(userDocumentRef, {
@@ -38,7 +44,6 @@ export async function userAddDoc(userObj: IUser) {
 
     user.id = userDocument.id;
     return user;
-  } else {
-    return checkUserObj; 
   }
+  return checkUserObj;
 }

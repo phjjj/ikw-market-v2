@@ -8,7 +8,7 @@ export interface ReactChildrenProps {
 export interface IKakaoUserResultData {
   data: {
     id: number;
-    kakao_account: {      
+    kakao_account: {
       profile: {
         nickname: string;
         profile_image_url: string;

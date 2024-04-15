@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { IKakaoUserResultData, IUser } from "../../types";
 import { userAddDoc } from "../../lib/db";
-import { useNavigate } from "react-router-dom";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
-  const grantType = "authorization_code";  
+  const grantType = "authorization_code";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function LoginRedirect() {
           },
         )
         .then((result) => {
-          const { access_token: accessToken } = result.data;
+          const { access_token: accessToken } = result.data; // 1. JWT Token, Firebase Auth 이용해서 토큰 받기. 조사할것, 2. 유저 보안에 대해서 어떻게 구축할지 알아보기!!
           localStorage.setItem("kakao_token", accessToken);
           axios
             .post(
@@ -42,8 +42,8 @@ function LoginRedirect() {
                 name: kakaoResult.data.kakao_account.profile.nickname,
                 image: kakaoResult.data.kakao_account.profile.profile_image_url,
               };
-              const user: IUser = await userAddDoc(userObj);                                          
-              navigate("/", { state: user });
+              const user: IUser = await userAddDoc(userObj);
+              navigate("/", { state: user }); // user 데이터 Recoil로 상태관리 할 예정.
             });
         });
     }
