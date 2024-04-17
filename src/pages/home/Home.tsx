@@ -1,13 +1,16 @@
 import styled from "styled-components";
+
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
+
 import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
 import { dbService } from "../../firebase/config";
 import { IProductData } from "../../types";
 
 function HomePage() {
+
   const { state: user } = useLocation();
 
   const [products, setProducts] = useState<IProductData[]>([]);
