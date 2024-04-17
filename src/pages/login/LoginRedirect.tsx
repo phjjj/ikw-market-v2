@@ -26,7 +26,6 @@ function LoginRedirect() {
         )
         .then((result) => {
           const { access_token: accessToken } = result.data; // 1. JWT Token, Firebase Auth 이용해서 토큰 받기. 조사할것, 2. 유저 보안에 대해서 어떻게 구축할지 알아보기!!
-          localStorage.setItem("kakao_token", accessToken);
           axios
             .post(
               "https://kapi.kakao.com/v2/user/me",
