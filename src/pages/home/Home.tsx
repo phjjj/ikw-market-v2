@@ -1,67 +1,38 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
 import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
-
-const DUMMY_PRODUCTS = [
-  {
-    id: 1,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기1",
-    price: 100000,
-    location: "2호관",
-  },
-  {
-    id: 2,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기2",
-    price: 100000,
-    location: "2호관",
-  },
-  {
-    id: 3,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기3",
-    price: 100000,
-    location: "2호관",
-  },
-  {
-    id: 4,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기3",
-    price: 100000,
-    location: "2호관",
-  },
-  {
-    id: 5,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기3",
-    price: 100000,
-    location: "2호관",
-  },
-  {
-    id: 6,
-    image:
-      "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    title: "사진기3",
-    price: 100000,
-    location: "2호관",
-  },
-];
+import { dbService } from "../../firebase/config";
+import { IProductData } from "../../types";
 
 function HomePage() {
   const { state: user } = useLocation();
 
+  const [products, setProducts] = useState<IProductData[]>([]);
+
   console.log(user);
+  // 실시간 업데이트 snapshot을 사용 할 경우 단점을 생각했을 때,
+  // 상품이 많을 경우 HomePage 컴포넌트가 리렌더링이 자주 일어남
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(dbService, "products"),
+      (snapshot) => {
+        console.log("렌더링");
+        const productsData = snapshot.docs.map((doc) => doc.data());
+        setProducts(productsData as IProductData[]);
+      },
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <HomePageWrapper>
       <Title className="xl">최근 중고거래 매물</Title>
-      <ProductList productData={DUMMY_PRODUCTS} />
+      <ProductList productData={products} />
     </HomePageWrapper>
   );
 }
