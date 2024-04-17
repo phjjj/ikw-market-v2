@@ -10,7 +10,6 @@ import { dbService } from "../../firebase/config";
 import { IProductData } from "../../types";
 
 function HomePage() {
-
   const { state: user } = useLocation();
 
   const [products, setProducts] = useState<IProductData[]>([]);

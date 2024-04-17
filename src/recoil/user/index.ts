@@ -13,7 +13,13 @@ export const kakaoIdAtom = atom({
   effects_UNSTABLE: [kakaoIdPeristAtom],
 });
 
-export const userAtom = atom<IUser | object>({
+export const userAtom = atom<IUser>({
+  default: {
+    id: "",
+    kakaoId: 0,
+    name: "",
+    image: "",
+    createdAt: 0,
+  },
   key: "user",
-  default: {},
 });

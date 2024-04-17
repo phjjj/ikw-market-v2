@@ -1,4 +1,4 @@
-import { useRecoilValue, useRecoilCallback, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilCallback } from "recoil";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { kakaoIdAtom, userAtom } from "../../../recoil/user";
@@ -9,7 +9,7 @@ interface ILoginButtonProps {
 
 function LoginButton({ setIsLogin }: ILoginButtonProps) {
   const kakaoId = useRecoilValue(kakaoIdAtom);
-  const [user, setUser] = useRecoilState(userAtom);
+  const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
 
   const isLogin = kakaoId && user;
@@ -19,7 +19,7 @@ function LoginButton({ setIsLogin }: ILoginButtonProps) {
   const logoutHandler = useRecoilCallback(({ reset }) => () => {
     sessionStorage.removeItem("kakaoIdRecoilPerist");
     reset(kakaoIdAtom);
-    setUser({});
+    reset(userAtom);
     setIsLogin(false);
   });
 
