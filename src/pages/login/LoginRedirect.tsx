@@ -1,13 +1,16 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import { IKakaoUserResultData, IUser } from "../../types";
-import { userAddDoc } from "../../lib/db";
+import { userAddDoc } from "../../lib/user/db";
+import { kakaoIdAtom } from "../../recoil/user";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
   const grantType = "authorization_code";
   const navigate = useNavigate();
+  const setKakaoId = useSetRecoilState(kakaoIdAtom);
 
   useEffect(() => {
     if (code) {
@@ -43,7 +46,8 @@ function LoginRedirect() {
                 image: kakaoResult.data.kakao_account.profile.profile_image_url,
               };
               const user: IUser = await userAddDoc(userObj);
-              navigate("/", { state: user }); // user 데이터 Recoil로 상태관리 할 예정.
+              setKakaoId(user.kakaoId);
+              navigate("/");
             });
         });
     }

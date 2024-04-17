@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
 import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
 
@@ -55,9 +54,6 @@ const DUMMY_PRODUCTS = [
 ];
 
 function HomePage() {
-  const { state: user } = useLocation();
-
-  console.log(user);
   return (
     <HomePageWrapper>
       <Title className="xl">최근 중고거래 매물</Title>
