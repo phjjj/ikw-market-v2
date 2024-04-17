@@ -24,3 +24,15 @@ export interface IUser {
   image?: string;
   createdAt?: number;
 }
+
+export interface IProductData {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  images: string[];
+  userId: string;
+  createdAt: number;
+  commentList: string[];
+}
