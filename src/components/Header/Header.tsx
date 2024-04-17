@@ -12,10 +12,10 @@ function Header() {
   const [user, setUser] = useRecoilState(userAtom);
 
   useEffect(() => {
-    const localStorageKakaoId = localStorage.getItem("kakaoIdRecoilPerist");
+    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
     let kakaoId = 0;
-    if (localStorageKakaoId) {
-      const { kakaoId: getKakaoId } = JSON.parse(localStorageKakaoId);
+    if (sessionStorageKakaoId) {
+      const { kakaoId: getKakaoId } = JSON.parse(sessionStorageKakaoId);
 
       kakaoId = getKakaoId;
     }

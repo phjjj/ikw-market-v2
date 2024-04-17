@@ -17,7 +17,7 @@ function LoginButton({ setIsLogin }: ILoginButtonProps) {
   const navigateHandler = () => navigate("/login");
 
   const logoutHandler = useRecoilCallback(({ reset }) => () => {
-    localStorage.removeItem("kakaoIdRecoilPerist");
+    sessionStorage.removeItem("kakaoIdRecoilPerist");
     reset(kakaoIdAtom);
     setUser({});
     setIsLogin(false);

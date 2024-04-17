@@ -4,7 +4,7 @@ import { IUser } from "../../types";
 
 const { persistAtom: kakaoIdPeristAtom } = recoilPersist({
   key: "kakaoIdRecoilPerist",
-  storage: localStorage,
+  storage: sessionStorage,
 });
 
 export const kakaoIdAtom = atom({
