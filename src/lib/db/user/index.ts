@@ -7,8 +7,8 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { dbService } from "../../firebase/config";
-import { IUser } from "../../types";
+import { dbService } from "../../../firebase/config";
+import { IUser } from "../../../types";
 
 export async function checkUser(kakaoId: number) {
   const userDocs = await getDocs(collection(dbService, "users"));

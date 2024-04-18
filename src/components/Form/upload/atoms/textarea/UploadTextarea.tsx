@@ -1,19 +1,16 @@
 import styled from "styled-components";
 import React from "react";
+import { UseFormRegister } from "react-hook-form";
 
 interface InputProps {
   labelText: string;
   maxLength?: number;
-  onChangeInputValue: (newValue: string) => void;
   value: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<any>;
 }
 
-function UploadTextarea({
-  labelText,
-  maxLength,
-  onChangeInputValue,
-  value,
-}: InputProps) {
+function UploadTextarea({ labelText, maxLength, value, register }: InputProps) {
   return (
     <InputContainer>
       <Label htmlFor={labelText}>
@@ -21,10 +18,11 @@ function UploadTextarea({
         {maxLength && <span>{`${value.length} / ${maxLength}`}</span>}
       </Label>
       <Textarea
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...register("description")}
         id={labelText}
         defaultValue={value}
         maxLength={maxLength}
-        onChange={(event) => onChangeInputValue(event.target.value)}
         rows={6}
       />
     </InputContainer>

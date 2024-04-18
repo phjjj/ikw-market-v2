@@ -1,12 +1,14 @@
 import styled from "styled-components";
+import { UseFormRegister } from "react-hook-form";
 
 interface InputProps {
   labelText: string;
   maxLength?: number;
   type?: string;
   placeholder?: string;
-  onChangeInputValue: (newValue: string) => void;
   value: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<any>; // Update this line
 }
 
 function UploadInput({
@@ -14,9 +16,23 @@ function UploadInput({
   maxLength,
   type,
   placeholder,
-  onChangeInputValue,
   value,
+  register,
 }: InputProps) {
+  // eslint-disable-next-line consistent-return
+  const setRegister = () => {
+    if (labelText === "상품명") {
+      return "title";
+    }
+    if (labelText === "가격") {
+      return "price";
+    }
+    if (labelText === "거래위치") {
+      return "location";
+    }
+    return "default";
+  };
+
   return (
     <InputContainer>
       <Label htmlFor={labelText}>
@@ -24,11 +40,12 @@ function UploadInput({
         {maxLength && <span>{`${value.length} / ${maxLength}`}</span>}
       </Label>
       <Input
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...register(setRegister())}
         id={labelText}
         type={type}
         placeholder={placeholder}
         maxLength={maxLength}
-        onChange={(event) => onChangeInputValue(event.target.value)}
         defaultValue={value}
       />
     </InputContainer>

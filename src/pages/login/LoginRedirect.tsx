@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { IKakaoUserResultData, IUser } from "../../types";
-import { userAddDoc } from "../../lib/user/db";
+import { userAddDoc } from "../../lib/db/user";
 import { kakaoIdAtom } from "../../recoil/user";
 
 function LoginRedirect() {
