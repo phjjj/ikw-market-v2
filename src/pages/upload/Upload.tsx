@@ -1,9 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
-import { uploadProductImgFile } from "../../lib/db/product";
+import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
+import { IProductData, IUser } from "../../types";
+import { userAtom } from "../../recoil/user";
 
 type FormValues = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,28 +21,32 @@ type FormValues = {
 function UploadPage() {
   const [fileList, setFileList] = useState<File[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
+  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const images = uploadProductImgFile(fileList);
-    const productObj = {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const images = await uploadProductImgFile(fileList);
+
+    const product: IProductData = {
       ...data,
       images,
+      userId: (user as IUser)?.id,
+      commentList: [],
     };
-    console.log(productObj);
+    await uploadProduct(product);
+    navigate("/");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [inputList, setInputList] = useState([
-    { label: "상품명", maxLength: 20, value: "" },
-    { label: "가격", type: "number", value: "" },
-    { label: "거래위치", maxLength: 10, value: "" },
-  ]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [textareaInfo, setTextareaInfo] = useState({
+  const inputList = [
+    { label: "상품명", maxLength: 20 },
+    { label: "가격", type: "number" },
+    { label: "거래위치", maxLength: 10 },
+  ];
+
+  const textAreaFormatted = {
     label: "상품설명",
     maxLength: 300,
-    value: "",
-  });
+  };
 
   return (
     <UploadContainer>
@@ -51,15 +59,13 @@ function UploadPage() {
             type={item.type}
             labelText={item.label}
             maxLength={item.maxLength}
-            value={item.value}
             register={register}
           />
         ))}
         <UploadForm.Textarea
-          key={textareaInfo.label}
-          labelText={textareaInfo.label}
-          maxLength={textareaInfo.maxLength}
-          value={textareaInfo.value}
+          key={textAreaFormatted.label}
+          labelText={textAreaFormatted.label}
+          maxLength={textAreaFormatted.maxLength}
           register={register}
         />
         <UploadForm.Button>등록 하기</UploadForm.Button>

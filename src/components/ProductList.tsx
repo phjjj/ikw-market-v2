@@ -9,7 +9,14 @@ function ProductList({ productData }: { productData: IProductData[] }) {
       {productData.map((product) => (
         <ProductCard key={product.id}>
           <Link to={`products/${product.id}`}>
-            <ProductCard.Image className="sm" src={product.images[0]} />
+            <ProductCard.Image
+              className="sm"
+              src={
+                product.images && product.images.length > 0
+                  ? product.images[0]
+                  : ""
+              }
+            />
           </Link>
           <ProductCard.Info>
             <ProductCard.Name body={product.title} />
