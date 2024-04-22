@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,25 @@ function UploadPage() {
   const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
 
+  const checkIsLogin = () => {
+    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
+
+    if (sessionStorageKakaoId) {
+      const { kakaoId } = JSON.parse(sessionStorageKakaoId);
+      if (user && kakaoId) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (!checkIsLogin()) {
+      navigate("/login");
+    }
+  }, []);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const images = await uploadProductImgFile(fileList);
 
@@ -33,6 +52,7 @@ function UploadPage() {
       userId: (user as IUser)?.id,
       commentList: [],
     };
+
     await uploadProduct(product);
     navigate("/");
   };

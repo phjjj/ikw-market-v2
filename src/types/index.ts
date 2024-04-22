@@ -31,8 +31,13 @@ export interface IProductData {
   description: string;
   price: number;
   location: string;
-  images: void | string[];
+  images: void | IImage[];
   userId?: string;
   createdAt?: number;
   commentList?: string[];
+}
+
+export interface IImage {
+  ref: string;
+  url: string;
 }

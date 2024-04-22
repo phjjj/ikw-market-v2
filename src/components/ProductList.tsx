@@ -13,7 +13,7 @@ function ProductList({ productData }: { productData: IProductData[] }) {
               className="sm"
               src={
                 product.images && product.images.length > 0
-                  ? product.images[0]
+                  ? product.images[0].url
                   : ""
               }
             />

@@ -8,7 +8,9 @@ interface FileInputProps {
 }
 
 function UploadImageList({ fileList, setFileList }: FileInputProps) {
-  const onDeleteImage = async () => {};
+  const onDeleteImage = (deleteFile: File) => {
+    setFileList(fileList.filter((file) => deleteFile !== file));
+  };
 
   return (
     <UploadImageInputContainer>
@@ -16,7 +18,7 @@ function UploadImageList({ fileList, setFileList }: FileInputProps) {
       <div style={{ display: "flex" }}>
         {fileList?.map((file: File) => (
           <UploadImagePreview
-            onDelete={() => onDeleteImage()}
+            onDelete={() => onDeleteImage(file)}
             key={URL.createObjectURL(file)}
             image={URL.createObjectURL(file)}
           />

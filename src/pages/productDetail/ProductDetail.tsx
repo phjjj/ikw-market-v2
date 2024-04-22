@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import styled from "styled-components";
 
 import ProductInfo from "./ProductInfo/ProductInfo";
