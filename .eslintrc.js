@@ -27,6 +27,7 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": ["error", { variables: false }],
     "import/prefer-default-export": "off",
     "no-multi-str": "off",
+    "no-await-in-loop": "off",
   },
 
   parserOptions: {

@@ -1,61 +1,92 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
+import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
+import { IProductData, IUser } from "../../types";
+import { userAtom } from "../../recoil/user";
+
+type FormValues = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  images: void | string[];
+  title: string;
+  price: number;
+  location: string;
+  description: string;
+};
 
 function UploadPage() {
-  const [inputList, setInputList] = useState([
-    { label: "상품명", maxLength: 20, value: "" },
-    { label: "가격", type: "number", value: "" },
-    { label: "거래위치", maxLength: 10, value: "" },
-  ]);
-  const [textareaInfo, setTextareaInfo] = useState({
-    label: "상품설명",
-    maxLength: 300,
-    value: "",
-  });
+  const [fileList, setFileList] = useState<File[]>([]);
+  const { register, handleSubmit } = useForm<FormValues>();
+  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate();
 
-  const handleChange = (index: number, newValue: string) => {
-    setInputList((prevState) => {
-      const updatedProductInfo = [...prevState];
-      updatedProductInfo[index].value = newValue;
-      return updatedProductInfo;
-    });
+  const checkIsLogin = () => {
+    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
+
+    if (sessionStorageKakaoId) {
+      const { kakaoId } = JSON.parse(sessionStorageKakaoId);
+      if (user && kakaoId) {
+        return true;
+      }
+      return false;
+    }
+    return false;
   };
 
-  const onTextAreaChange = (newValue: string) => {
-    setTextareaInfo((prevState) => {
-      const updatedTextareaInfo = {
-        ...prevState,
-        value: newValue,
-      };
-      return updatedTextareaInfo;
-    });
+  useEffect(() => {
+    if (!checkIsLogin()) {
+      navigate("/login");
+    }
+  }, []);
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const images = await uploadProductImgFile(fileList);
+
+    const product: IProductData = {
+      ...data,
+      images,
+      userId: (user as IUser)?.id,
+      commentList: [],
+    };
+
+    await uploadProduct(product);
+    navigate("/");
+  };
+
+  const inputList = [
+    { label: "상품명", maxLength: 20 },
+    { label: "가격", type: "number" },
+    { label: "거래위치", maxLength: 10 },
+  ];
+
+  const textAreaFormatted = {
+    label: "상품설명",
+    maxLength: 300,
   };
 
   return (
     <UploadContainer>
       <Title className="xl">상품등록</Title>
-      <UploadForm>
-        <UploadForm.ImageList />
-        {inputList.map((item, index) => (
+      <UploadForm handleSubmit={handleSubmit} onSubmit={onSubmit}>
+        <UploadForm.ImageList fileList={fileList} setFileList={setFileList} />
+        {inputList.map((item) => (
           <UploadForm.Input
             key={item.label}
             type={item.type}
             labelText={item.label}
             maxLength={item.maxLength}
-            value={item.value}
-            onChangeInputValue={(newValue: string) =>
-              handleChange(index, newValue)
-            }
+            register={register}
           />
         ))}
         <UploadForm.Textarea
-          key={textareaInfo.label}
-          labelText={textareaInfo.label}
-          maxLength={textareaInfo.maxLength}
-          onChangeInputValue={(newValue: string) => onTextAreaChange(newValue)}
-          value={textareaInfo.value}
+          key={textAreaFormatted.label}
+          labelText={textAreaFormatted.label}
+          maxLength={textAreaFormatted.maxLength}
+          register={register}
         />
         <UploadForm.Button>등록 하기</UploadForm.Button>
       </UploadForm>

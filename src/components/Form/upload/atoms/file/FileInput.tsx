@@ -1,57 +1,57 @@
-import React, { useRef } from "react";
+import React from "react";
 import { BiImageAdd } from "react-icons/bi";
 import styled from "styled-components";
 
-function FileInput({
-  setFileList,
-}: {
-  setFileList: React.Dispatch<React.SetStateAction<string[]>>;
-}) {
-  const uploadImgInput = useRef<HTMLInputElement>(null);
+interface FileInputProps {
+  setFileList: React.Dispatch<React.SetStateAction<File[]>>;
+}
 
-  const onChangeImgInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const imagFiles = e.target.files || [];
-    const imgFileList = Array.from(imagFiles);
-
-    imgFileList.forEach((imgFile) => {
-      const blob = URL.createObjectURL(imgFile);
-      setFileList((prev) => [...prev, blob]);
-    });
-  };
-
-  const onClickButton = () => {
-    uploadImgInput.current?.click();
+function FileInput({ setFileList }: FileInputProps) {
+  const onChangeImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const imageFiles = Array.from(e.target.files);
+      setFileList((prev) => [...prev, ...imageFiles]);
+    }
   };
 
   return (
-    <>
+    <InputWrapper>
       <input
         onChange={onChangeImgInput}
-        ref={uploadImgInput}
-        style={{ display: "none" }}
         type="file"
         accept="image/jpg, image/jpeg, image/png"
+        multiple
       />
-      <Button type="button" onClick={onClickButton}>
+      <Button>
         <BiImageAdd size={50} />
         상품 이미지 등록
       </Button>
-    </>
+    </InputWrapper>
   );
 }
 
-const Button = styled.button`
+const InputWrapper = styled.label`
   display: flex;
   flex-direction: column;
-  cursor: pointer;
-  color: gray;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 200px;
   height: 200px;
-  flex: 0 0 auto;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
+`;
+
+const Button = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: gray;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export default FileInput;

@@ -5,8 +5,10 @@ import Nav from "./molecules/Nav";
 import Logo from "./atoms/Logo";
 import LoginButton from "./atoms/LoginButton";
 import { userAtom } from "../../recoil/user";
+
 import { getUserDoc } from "../../lib/user/db";
 import { IUser } from "../../types";
+
 
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
