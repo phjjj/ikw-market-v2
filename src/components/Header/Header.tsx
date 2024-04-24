@@ -5,7 +5,10 @@ import Nav from "./molecules/Nav";
 import Logo from "./atoms/Logo";
 import LoginButton from "./atoms/LoginButton";
 import { userAtom } from "../../recoil/user";
-import { getUserDoc } from "../../lib/db/user";
+
+import { getUserDoc } from "../../lib/user/db";
+import { IUser } from "../../types";
+
 
 function Header() {
   const [isLogin, setIsLogin] = useState(false);
@@ -22,7 +25,7 @@ function Header() {
     if (kakaoId) {
       getUserDoc(kakaoId).then((userDoc) => {
         if (Object.keys(userDoc).length !== 0) {
-          setUser(userDoc);
+          setUser(userDoc as IUser);
           setIsLogin(true);
         }
       });
