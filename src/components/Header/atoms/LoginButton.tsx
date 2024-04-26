@@ -3,16 +3,9 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { kakaoIdAtom, userAtom } from "../../../recoil/user";
 
-interface ILoginButtonProps {
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function LoginButton({ setIsLogin }: ILoginButtonProps) {
+function LoginButton() {
   const kakaoId = useRecoilValue(kakaoIdAtom);
-  const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
-
-  const isLogin = kakaoId && user;
 
   const navigateHandler = () => navigate("/login");
 
@@ -20,15 +13,15 @@ function LoginButton({ setIsLogin }: ILoginButtonProps) {
     sessionStorage.removeItem("kakaoIdRecoilPerist");
     reset(kakaoIdAtom);
     reset(userAtom);
-    setIsLogin(false);
   });
 
   return (
-    <Button onClick={!isLogin ? navigateHandler : logoutHandler}>
-      {isLogin ? <span>로그아웃</span> : <span>로그인</span>}
+    <Button onClick={kakaoId ? logoutHandler : navigateHandler}>
+      <span>{kakaoId ? "로그아웃" : "로그인"}</span>
     </Button>
   );
 }
+
 const Button = styled.button`
   border: none;
   background-color: #fff;
