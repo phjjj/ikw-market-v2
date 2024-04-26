@@ -11,21 +11,19 @@ import { dbService } from "../../../firebase/config";
 import { IUser } from "../../../types";
 
 export async function checkUser(kakaoId: number) {
-  const userDocs = await getDocs(collection(dbService, "users"));
-  let checkUserObj;
+  const userQuery = query(
+    collection(dbService, "users"),
+    where("kakaoId", "==", kakaoId),
+  );
+  const userSnapshot = await getDocs(userQuery);
 
-  try {
-    userDocs.forEach((userDoc) => {
-      const user = userDoc.data();
-      if (user.kakaoId === kakaoId) {
-        checkUserObj = user;
-        throw new Error("Is User");
-      }
-    });
-  } catch (error) {
-    console.log(error);
+  if (userSnapshot.empty) {
+    return false;
   }
-  return checkUserObj;
+
+  const userDoc = userSnapshot.docs[0];
+  const userData = userDoc.data() as IUser;
+  return userData;
 }
 
 export async function userAddDoc(userObj: IUser) {
