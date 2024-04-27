@@ -7,7 +7,7 @@ import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
 import { IProductData, IUser } from "../../types";
-import { userAtom } from "../../recoil/user";
+import { userSelector } from "../../recoil/user";
 
 type FormValues = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ type FormValues = {
 function UploadPage() {
   const [fileList, setFileList] = useState<File[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
-  const user = useRecoilValue(userAtom);
+  const user = useRecoilValue(userSelector);
   const navigate = useNavigate();
 
   const checkIsLogin = () => {
