@@ -1,37 +1,10 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+
 import Nav from "./molecules/Nav";
 import Logo from "./atoms/Logo";
 import LoginButton from "./atoms/LoginButton";
-import { userAtom } from "../../recoil/user";
-
-import { IUser } from "../../types";
-import { getUserDoc } from "../../lib/db/user";
 
 function Header() {
-  const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useRecoilState(userAtom);
-
-  useEffect(() => {
-    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
-    let kakaoId = 0;
-    if (sessionStorageKakaoId) {
-      const { kakaoId: getKakaoId } = JSON.parse(sessionStorageKakaoId);
-
-      kakaoId = getKakaoId;
-    }
-    if (kakaoId) {
-      getUserDoc(kakaoId).then((userDoc) => {
-        if (Object.keys(userDoc).length !== 0) {
-          setUser(userDoc as IUser);
-          setIsLogin(true);
-        }
-      });
-    }
-  }, []);
-
-  console.log(user, isLogin);
   return (
     <HeaderLayout>
       <Logo />
@@ -39,7 +12,7 @@ function Header() {
       <Nav>
         <Nav.Item to="upload" body="내 물건 팔기" />
         <Nav.Item to="profile/:id" body="내 정보" />
-        <LoginButton setIsLogin={setIsLogin} />
+        <LoginButton />
       </Nav>
     </HeaderLayout>
   );

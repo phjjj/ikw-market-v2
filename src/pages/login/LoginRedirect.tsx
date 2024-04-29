@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { IKakaoUserResultData, IUser } from "../../types";
 import { userAddDoc } from "../../lib/db/user";
-import { kakaoIdAtom } from "../../recoil/user";
+import { userIdAtom } from "../../recoil/user";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
   const grantType = "authorization_code";
   const navigate = useNavigate();
-  const setKakaoId = useSetRecoilState(kakaoIdAtom);
+
+  const setUserId = useSetRecoilState(userIdAtom);
 
   useEffect(() => {
     if (code) {
@@ -44,8 +45,8 @@ function LoginRedirect() {
                 name: kakaoResult.data.kakao_account.profile.nickname,
                 image: kakaoResult.data.kakao_account.profile.profile_image_url,
               };
-              const user: IUser = await userAddDoc(userObj);
-              setKakaoId(user.kakaoId);
+              const user = await userAddDoc(userObj);
+              setUserId(user.id);
               navigate("/");
             });
         });
