@@ -7,6 +7,7 @@ import MainLayout from "../pages/MainLayout";
 import ProfilePage from "../pages/profile/Profile";
 import ErrorPage from "../pages/error/Error";
 import LoginRedirect from "../pages/login/LoginRedirect";
+import ProductUpdatePage from "../pages/update";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,16 @@ const router = createBrowserRouter([
       },
       {
         path: "products/:id",
-        element: <ProductPage />,
+        children: [
+          {
+            index: true,
+            element: <ProductPage />,
+          },
+          {
+            path: "update",
+            element: <ProductUpdatePage />,
+          },
+        ],
       },
     ],
   },

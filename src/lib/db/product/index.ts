@@ -5,7 +5,17 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  DocumentData,
+  QuerySnapshot,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
 import { IImage, IProductData } from "../../../types";
 
@@ -64,4 +74,25 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
     const imageRef = ref(storageService, deleteImgRef);
     await deleteObject(imageRef);
   }
+}
+
+export async function getProduct(productId: string) {
+  const condition = query(
+    collection(dbService, "products"),
+    where("id", "==", productId),
+  );
+  let productsSnapshot: QuerySnapshot<DocumentData, DocumentData> | undefined;
+  try {
+    productsSnapshot = await getDocs(condition);
+  } catch (error) {
+    console.log("Firestorage Read Product Document Error!");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let product: IProductData | object = {};
+  productsSnapshot?.forEach((productDoc) => {
+    product = productDoc.data();
+  });
+
+  return product;
 }
