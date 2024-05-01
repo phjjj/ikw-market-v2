@@ -1,58 +1,49 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useRecoilValueLoadable } from "recoil";
 import UserInfo from "./molecules/UserInfo";
-// import ProductList from "../../components/ProductList";
+import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
+import { userSelector } from "../../recoil/user";
+import { IProductData, IUser } from "../../types";
+import { getUserProducts } from "../../lib/db/product";
 
 function ProfilePage() {
-  const DUMMY_USER_DATA = {
-    image:
-      "https://cdnweb01.wikitree.co.kr/webdata/editor/202210/17/img_20221017153113_ca91465f.webp",
-    name: "카리나",
-    // products: [
-    //   {
-    //     id: 1,
-    //     image:
-    //       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    //     title: "사진기",
-    //     price: 100000,
-    //     location: "2호관",
-    //   },
-    //   {
-    //     id: 2,
-    //     image:
-    //       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    //     title: "사진기",
-    //     price: 100000,
-    //     location: "2호관",
-    //   },
-    //   {
-    //     id: 3,
-    //     image:
-    //       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    //     title: "사진기",
-    //     price: 100000,
-    //     location: "2호관",
-    //   },
-    //   {
-    //     id: 4,
-    //     image:
-    //       "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-    //     title: "사진기",
-    //     price: 100000,
-    //     location: "2호관",
-    //   },
-    // ],
-  };
+  const userSelectorLoadable = useRecoilValueLoadable(userSelector);
+  const [products, setProducts] = useState<IProductData[]>([]);
+  const [user, setUser] = useState<IUser>({
+    id: "",
+    name: "",
+    kakaoId: 0,
+    image: "",
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      if (userSelectorLoadable.state === "hasValue") {
+        const userData = userSelectorLoadable.contents;
+        setUser(userData);
+
+        // 유저 데이터가 유효한 경우에만 상품 데이터를 가져옴
+        if (userData.id) {
+          const userProducts = await getUserProducts(userData.id);
+          setProducts(userProducts);
+        }
+      }
+    }
+    fetchData();
+  }, [userSelectorLoadable]);
+
   return (
     <ProfilePageContainer>
       <UserInfo>
-        <UserInfo.Image src={DUMMY_USER_DATA.image} />
-        <UserInfo.Name body={DUMMY_USER_DATA.name} />
+        <UserInfo.Image src={user.image} />
+        <UserInfo.Name body={user.name} />
         <UserInfo.ModifyButton />
       </UserInfo>
       <hr style={{ width: "100%" }} />
       <Title className="lg">내가 올린 물건</Title>
-      {/* <ProductList productData={DUMMY_USER_DATA.products} /> */}
+      <ProductList productData={products} />
     </ProfilePageContainer>
   );
 }
