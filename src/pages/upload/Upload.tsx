@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import { useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
@@ -21,15 +21,15 @@ type FormValues = {
 function UploadPage() {
   const [fileList, setFileList] = useState<File[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
-  const user = useRecoilValue(userSelector);
+  const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();
 
   const checkIsLogin = () => {
-    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
+    const sessionStorageKakaoId = sessionStorage.getItem("uid");
 
     if (sessionStorageKakaoId) {
-      const { kakaoId } = JSON.parse(sessionStorageKakaoId);
-      if (user && kakaoId) {
+      const { userId } = JSON.parse(sessionStorageKakaoId);
+      if (userLoadable.contents && userId) {
         return true;
       }
       return false;
@@ -49,7 +49,7 @@ function UploadPage() {
     const product: IProductData = {
       ...data,
       images,
-      userId: (user as IUser)?.id,
+      userId: (userLoadable.contents as IUser)?.id,
       commentList: [],
     };
 
