@@ -5,7 +5,15 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
 import { IImage, IProductData } from "../../../types";
 
@@ -64,4 +72,19 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
     const imageRef = ref(storageService, deleteImgRef);
     await deleteObject(imageRef);
   }
+}
+
+export async function getUserProducts(userId: string) {
+  const productQuery = query(
+    collection(dbService, "products"),
+    where("userId", "==", userId),
+  );
+  const productsSnapshot = await getDocs(productQuery);
+
+  const productsData: IProductData[] = [];
+  productsSnapshot.docs.forEach((product) => {
+    productsData.push(product.data() as IProductData);
+  });
+
+  return productsData;
 }
