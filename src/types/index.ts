@@ -21,7 +21,7 @@ export interface IUser {
   id?: string;
   kakaoId: number;
   name: string;
-  image?: string;
+  image: string | null;
   createdAt?: number;
 }
 
