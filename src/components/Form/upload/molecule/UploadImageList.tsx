@@ -2,25 +2,30 @@ import styled from "styled-components";
 import UploadImagePreview from "./UploadImagePreview";
 import FileInput from "../atoms/file/FileInput";
 
+interface IFileList {
+  data?: File;
+  url: string;
+  ref?: string;
+}
 interface FileInputProps {
-  fileList: File[];
-  setFileList: React.Dispatch<React.SetStateAction<File[]>>;
+  fileList: IFileList[];
+  setFileList: React.Dispatch<React.SetStateAction<IFileList[]>>;
 }
 
 function UploadImageList({ fileList, setFileList }: FileInputProps) {
-  const onDeleteImage = (deleteFile: File) => {
-    setFileList(fileList.filter((file) => deleteFile !== file));
+  const onDeleteImage = (deleteFileUrl: string) => {
+    setFileList(fileList.filter((file) => file.url !== deleteFileUrl));
   };
 
   return (
     <UploadImageInputContainer>
       <FileInput setFileList={setFileList} />
       <div style={{ display: "flex" }}>
-        {fileList?.map((file: File) => (
+        {fileList?.map((file) => (
           <UploadImagePreview
-            onDelete={() => onDeleteImage(file)}
-            key={URL.createObjectURL(file)}
-            image={URL.createObjectURL(file)}
+            onDelete={() => onDeleteImage(file.url)}
+            key={file.url}
+            image={file.url}
           />
         ))}
       </div>

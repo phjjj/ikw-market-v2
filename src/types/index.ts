@@ -31,13 +31,14 @@ export interface IProductData {
   description: string;
   price: number;
   location: string;
-  images: void | IImage[];
+  images: void | IFileList[];
   userId?: string;
   createdAt?: number;
   commentList?: string[];
 }
 
-export interface IImage {
-  ref: string;
+export interface IFileList {
+  data?: File;
   url: string;
+  ref?: string;
 }

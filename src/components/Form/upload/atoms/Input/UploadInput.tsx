@@ -9,6 +9,7 @@ interface InputProps {
   placeholder?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>; // Update this line
+  value?: string | number;
 }
 
 function UploadInput({
@@ -17,8 +18,9 @@ function UploadInput({
   type,
   placeholder,
   register,
+  value,
 }: InputProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(value);
 
   // eslint-disable-next-line consistent-return
   const setRegister = () => {
@@ -38,7 +40,9 @@ function UploadInput({
     <InputContainer>
       <Label htmlFor={labelText}>
         <span>{labelText}</span>
-        {maxLength && <span>{`${inputValue.length} / ${maxLength}`}</span>}
+        {maxLength && (
+          <span>{`${typeof inputValue === "string" && inputValue.length} / ${maxLength}`}</span>
+        )}
       </Label>
       <Input
         // eslint-disable-next-line react/jsx-props-no-spreading

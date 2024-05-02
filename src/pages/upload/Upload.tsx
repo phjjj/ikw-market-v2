@@ -18,8 +18,14 @@ type FormValues = {
   description: string;
 };
 
+interface IFileList {
+  data?: File;
+  url: string;
+  ref?: string;
+}
+
 function UploadPage() {
-  const [fileList, setFileList] = useState<File[]>([]);
+  const [fileList, setFileList] = useState<IFileList[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
   const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();

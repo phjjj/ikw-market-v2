@@ -17,19 +17,21 @@ import {
   where,
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
-import { IImage, IProductData } from "../../../types";
+import { IFileList, IProductData } from "../../../types";
 
-async function fileImgUpload(fileList: File[]) {
-  const images: IImage[] = [];
+async function fileImgUpload(fileList: IFileList[]) {
+  const images: IFileList[] = [];
 
   if (fileList.length > 0) {
     try {
       // eslint-disable-next-line no-restricted-syntax
       for (const file of fileList) {
         const locationRef = ref(storageService, `products/${uuidv4()}`);
-        const result = await uploadBytes(locationRef, file);
-        const productImgUrl = await getDownloadURL(result.ref);
-        images.push({ url: productImgUrl, ref: locationRef.toString() });
+        if (file.data) {
+          const result = await uploadBytes(locationRef, file.data);
+          const productImgUrl = await getDownloadURL(result.ref);
+          images.push({ url: productImgUrl, ref: locationRef.toString() });
+        }
       }
       return images;
     } catch (error) {
@@ -42,8 +44,8 @@ async function fileImgUpload(fileList: File[]) {
 }
 
 export async function uploadProductImgFile(
-  fileList: File[],
-): Promise<IImage[]> {
+  fileList: IFileList[],
+): Promise<IFileList[]> {
   const images = await fileImgUpload(fileList);
 
   return images;
@@ -74,9 +76,9 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
     const imageRef = ref(storageService, deleteImgRef);
     await deleteObject(imageRef);
   }
-}
+} // Make sure to import IProductData
 
-export async function getProduct(productId: string) {
+export async function getProduct(productId: string): Promise<IProductData> {
   const condition = query(
     collection(dbService, "products"),
     where("id", "==", productId),
@@ -88,10 +90,18 @@ export async function getProduct(productId: string) {
     console.log("Firestorage Read Product Document Error!");
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let product: IProductData | object = {};
+  let product: IProductData = {
+    // Initialize with default values or ensure the object structure matches IProductData
+    title: "",
+    description: "",
+    price: 0,
+    location: "",
+    images: [],
+    // Add other properties as needed
+  };
+
   productsSnapshot?.forEach((productDoc) => {
-    product = productDoc.data();
+    product = productDoc.data() as IProductData; // Cast to IProductData
   });
 
   return product;

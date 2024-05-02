@@ -2,15 +2,25 @@ import React from "react";
 import { BiImageAdd } from "react-icons/bi";
 import styled from "styled-components";
 
+interface IFileList {
+  data?: File;
+  url: string;
+  ref?: string;
+}
 interface FileInputProps {
-  setFileList: React.Dispatch<React.SetStateAction<File[]>>;
+  setFileList: React.Dispatch<React.SetStateAction<IFileList[]>>;
 }
 
 function FileInput({ setFileList }: FileInputProps) {
   const onChangeImgInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const imageFiles = Array.from(e.target.files);
-      setFileList((prev) => [...prev, ...imageFiles]);
+      imageFiles.forEach((file: File) => {
+        setFileList((prev) => [
+          ...prev,
+          { data: file, url: URL.createObjectURL(file) },
+        ]);
+      });
     }
   };
 
