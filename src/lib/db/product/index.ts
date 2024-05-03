@@ -9,6 +9,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   updateDoc,
@@ -46,7 +47,7 @@ export async function uploadProductImgFile(
 
   return images;
 }
-
+// 상품 등록 하기
 export async function uploadProduct(product: IProductData) {
   try {
     const productDocument = await addDoc(
@@ -73,7 +74,7 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
     await deleteObject(imageRef);
   }
 }
-
+// 유저 상품 목록
 export async function getUserProducts(userId: string) {
   const productQuery = query(
     collection(dbService, "products"),
@@ -87,4 +88,47 @@ export async function getUserProducts(userId: string) {
   });
 
   return productsData;
+}
+// 전체 상품 조회
+export async function getAllProducts() {
+  const productQuery = query(collection(dbService, "products"));
+  const productsSnapshot = await getDocs(productQuery);
+  const productsData: IProductData[] = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const product of productsSnapshot.docs) {
+    const productData = product.data() as IProductData;
+    const { userId } = productData;
+    const userDocRef = doc(dbService, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+    // 유저 이름 등록
+    // 처음부터 업로드 할 때, 유저 이름을 등록해버리면 나중에 유저가 이름을 변경할 경우 상품 정보에는 유저의 이름이 변경되지 않음
+    if (userDocSnapshot.exists()) {
+      const userData = userDocSnapshot.data();
+      const { name } = userData;
+      productData.userName = name;
+    }
+    productsData.push(productData);
+  }
+  return productsData;
+}
+// 상품 상세 조회
+export async function getProduct(productId: string) {
+  const productDocRef = doc(dbService, "products", productId);
+  const productDocSnapshot = await getDoc(productDocRef);
+  if (productDocSnapshot.exists()) {
+    const productData = productDocSnapshot.data() as IProductData;
+    const { userId } = productData;
+    const userDocRef = doc(dbService, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+    // 유저 정보 가져오기
+    if (userDocSnapshot.exists()) {
+      const userData = userDocSnapshot.data();
+      const { name } = userData;
+      // 상품에 유저 이름 등록
+      productData.userName = name;
+    }
+
+    return productData;
+  }
+  throw new Error("상품을 찾을 수 없습니다.");
 }
