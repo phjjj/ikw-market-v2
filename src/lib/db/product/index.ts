@@ -6,8 +6,6 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import {
-  DocumentData,
-  QuerySnapshot,
   addDoc,
   collection,
   doc,
@@ -115,4 +113,19 @@ export async function getProduct(productId: string): Promise<IProductData> {
   });
 
   return product;
+}
+
+export async function getUserProducts(userId: string) {
+  const productQuery = query(
+    collection(dbService, "products"),
+    where("userId", "==", userId),
+  );
+  const productsSnapshot = await getDocs(productQuery);
+
+  const productsData: IProductData[] = [];
+  productsSnapshot.docs.forEach((product) => {
+    productsData.push(product.data() as IProductData);
+  });
+
+  return productsData;
 }

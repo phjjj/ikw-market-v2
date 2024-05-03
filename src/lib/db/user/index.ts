@@ -10,7 +10,7 @@ import {
 import { dbService } from "../../../firebase/config";
 import { IUser } from "../../../types";
 
-export async function checkUser(kakaoId: number) {
+export async function checkUser(kakaoId: number): Promise<IUser | null> {
   const userQuery = query(
     collection(dbService, "users"),
     where("kakaoId", "==", kakaoId),
@@ -18,7 +18,7 @@ export async function checkUser(kakaoId: number) {
   const userSnapshot = await getDocs(userQuery);
 
   if (userSnapshot.empty) {
-    return false;
+    return null;
   }
 
   const userDoc = userSnapshot.docs[0];
@@ -47,32 +47,23 @@ export async function userAddDoc(userObj: IUser) {
   }
   return checkUserObj;
 }
-
-export async function getUserDoc(
-  identifier: string | number,
-): Promise<IUser | object> {
-  let condition;
-  // identifier은 user 문서의 id로 올 경우.
-  if (typeof identifier === "string") {
-    condition = query(
+// thorw err 발생시킨다 -> recoilSeletor에서 haserr 상태 업데이트 -> 굿
+export async function getUserDoc(identifier: string): Promise<IUser> {
+  try {
+    const condition = query(
       collection(dbService, "users"),
       where("id", "==", identifier),
     );
-  } else {
-    // identifier은 kakaoId 인 경우.
-    condition = query(
-      collection(dbService, "users"),
-      where("kakaoId", "==", identifier),
-    );
+
+    const userSnapshot = await getDocs(condition);
+    const userDocs = userSnapshot.docs.map((userDoc) => userDoc.data());
+
+    if (userDocs.length > 0) {
+      const user = userDocs[0] as IUser;
+      return user;
+    }
+    throw new Error(`유저 정보를 찾을 수 없습니다.${identifier}`);
+  } catch (error) {
+    throw new Error(`Error retrieving user document: ${error}`);
   }
-
-  const userSnapshot = await getDocs(condition);
-
-  let user: IUser | object = {};
-
-  userSnapshot.forEach((userDoc) => {
-    user = userDoc.data();
-  });
-
-  return user;
 }
