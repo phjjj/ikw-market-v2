@@ -18,7 +18,7 @@ export interface IKakaoUserResultData {
 }
 
 export interface IUser {
-  id?: string;
+  id?: string | undefined;
   kakaoId: number;
   name: string;
   image: string | null;
@@ -26,15 +26,16 @@ export interface IUser {
 }
 
 export interface IProductData {
-  id?: string;
+  id: string;
+  userName: string;
   title: string;
   description: string;
   price: number;
   location: string;
-  images: void | IImage[];
-  userId?: string;
-  createdAt?: number;
-  commentList?: string[];
+  images: IImage[];
+  userId: string;
+  createdAt: number;
+  commentList: [];
 }
 
 export interface IImage {
