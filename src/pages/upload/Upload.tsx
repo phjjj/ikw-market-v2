@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilValueLoadable } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
@@ -24,10 +24,11 @@ function UploadPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!checkIsLogin(userLoadable.contents)) {
-      navigate("/login");
+      navigate("/login", { state: { path: location.pathname } });
     }
   }, []);
 

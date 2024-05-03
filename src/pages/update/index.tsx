@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -34,6 +34,7 @@ function ProductUpdatePage() {
   const [deletedImageFileRef, setDeletedImageFileRef] = useState<string[]>([]);
   const [uploadFileList, setUploadFileList] = useState<IFileList[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (productId) {
@@ -47,7 +48,7 @@ function ProductUpdatePage() {
 
   useEffect(() => {
     if (!checkIsLogin(userLoadable.contents)) {
-      navigate("/login");
+      navigate("/login", { state: { path: location.pathname } });
     }
   }, []);
 
