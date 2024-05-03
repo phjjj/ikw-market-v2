@@ -31,7 +31,7 @@ export interface IProductData {
   description: string;
   price: number;
   location: string;
-  images: void | IFileList[];
+  images: IFileList[];
   userId?: string;
   createdAt?: number;
   commentList?: string[];

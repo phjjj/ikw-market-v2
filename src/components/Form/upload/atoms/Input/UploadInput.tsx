@@ -41,7 +41,7 @@ function UploadInput({
       <Label htmlFor={labelText}>
         <span>{labelText}</span>
         {maxLength && (
-          <span>{`${typeof inputValue === "string" && inputValue.length} / ${maxLength}`}</span>
+          <span>{`${inputValue?.toLocaleString().length} / ${maxLength}`}</span>
         )}
       </Label>
       <Input

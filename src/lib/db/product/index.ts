@@ -69,6 +69,16 @@ export async function uploadProduct(product: IProductData) {
   }
 }
 
+export async function updateProduct(productId: string, product: IProductData) {
+  const productDocumentRef = doc(dbService, "products", productId);
+  console.log("업테이트 상품 : ", product);
+  try {
+    await updateDoc(productDocumentRef, { ...product });
+  } catch (error) {
+    console.log("Firestore 상품 업데이트 통신 에러 : ", error);
+  }
+}
+
 export async function deleteProductImageFile(deleteImgRefStr: string[]) {
   // deleteImgRefStr 배열 요소 값 형식은 ["이미지 참조1", "이미지 참조2" ];
   // eslint-disable-next-line no-restricted-syntax

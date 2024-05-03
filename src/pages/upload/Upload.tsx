@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
-import { IProductData, IUser } from "../../types";
+import { IFileList, IProductData, IUser } from "../../types";
 import { userSelector } from "../../recoil/user";
 
 type FormValues = {
@@ -17,12 +17,6 @@ type FormValues = {
   location: string;
   description: string;
 };
-
-interface IFileList {
-  data?: File;
-  url: string;
-  ref?: string;
-}
 
 function UploadPage() {
   const [fileList, setFileList] = useState<IFileList[]>([]);
@@ -86,6 +80,7 @@ function UploadPage() {
             labelText={item.label}
             maxLength={item.maxLength}
             register={register}
+            value={item.type === "number" ? 0 : ""}
           />
         ))}
         <UploadForm.Textarea
@@ -93,6 +88,7 @@ function UploadPage() {
           labelText={textAreaFormatted.label}
           maxLength={textAreaFormatted.maxLength}
           register={register}
+          value=""
         />
         <UploadForm.Button>등록 하기</UploadForm.Button>
       </UploadForm>

@@ -1,10 +1,15 @@
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValueLoadable } from "recoil";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { userIdAtom } from "../../recoil/user";
-import { getProduct } from "../../lib/db/product";
-import { IFileList, IProductData } from "../../types";
+import { userSelector } from "../../recoil/user";
+import {
+  deleteProductImageFile,
+  getProduct,
+  updateProduct,
+  uploadProductImgFile,
+} from "../../lib/db/product";
+import { IFileList, IProductData, IUser } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
@@ -22,9 +27,12 @@ function ProductUpdatePage() {
   const { id: productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState<IProductData>();
-  const userId = useRecoilValue(userIdAtom);
+  const userLoadable = useRecoilValueLoadable(userSelector);
   const { register, handleSubmit } = useForm<FormValues>();
   const [fileList, setFileList] = useState<IFileList[]>([]);
+  const [deletedImageFileRef, setDeletedImageFileRef] = useState<string[]>([]);
+  const [uploadFileList, setUploadFileList] = useState<IFileList[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (productId) {
@@ -36,7 +44,26 @@ function ProductUpdatePage() {
     }
   }, []);
 
-  console.log(product, userId);
+  const checkIsLogin = () => {
+    const sessionStorageKakaoId = sessionStorage.getItem("uid");
+
+    if (sessionStorageKakaoId) {
+      const { userId } = JSON.parse(sessionStorageKakaoId);
+      if (userLoadable.contents && userId) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    if (!checkIsLogin()) {
+      navigate("/login");
+    }
+  }, []);
+
+  console.log(product, deletedImageFileRef, fileList, uploadFileList);
 
   const inputList = [
     { label: "상품명", maxLength: 20 },
@@ -49,7 +76,30 @@ function ProductUpdatePage() {
     maxLength: 300,
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async () => {};
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const updateProductData: IProductData = {
+      ...data,
+      images: fileList,
+      userId: (userLoadable.contents as IUser)?.id,
+      commentList: [],
+    };
+
+    if (deletedImageFileRef.length > 0) {
+      await deleteProductImageFile(deletedImageFileRef);
+    }
+
+    if (uploadFileList.length > 0) {
+      const uploadImages = await uploadProductImgFile(uploadFileList);
+      uploadFileList.forEach(() => {
+        updateProductData.images?.pop();
+      });
+      updateProductData.images = [...updateProductData.images, ...uploadImages];
+    }
+    if (productId) {
+      await updateProduct(productId, updateProductData);
+    }
+    navigate("/");
+  };
 
   // eslint-disable-next-line consistent-return
   const settingInputValue = (inputLabel: string) => {
@@ -73,7 +123,10 @@ function ProductUpdatePage() {
           <UploadForm handleSubmit={handleSubmit} onSubmit={onSubmit}>
             <UploadForm.ImageList
               fileList={fileList}
+              uploadFileList={uploadFileList}
               setFileList={setFileList}
+              setUploadFileList={setUploadFileList}
+              setDeletedImageFileRef={setDeletedImageFileRef}
             />
             {inputList.map((item) => (
               <UploadForm.Input
