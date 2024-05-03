@@ -13,6 +13,7 @@ import { IFileList, IProductData, IUser } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
+import { checkIsLogin } from "../../util";
 
 type FormValues = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,21 +45,8 @@ function ProductUpdatePage() {
     }
   }, []);
 
-  const checkIsLogin = () => {
-    const sessionStorageKakaoId = sessionStorage.getItem("uid");
-
-    if (sessionStorageKakaoId) {
-      const { userId } = JSON.parse(sessionStorageKakaoId);
-      if (userLoadable.contents && userId) {
-        return true;
-      }
-      return false;
-    }
-    return false;
-  };
-
   useEffect(() => {
-    if (!checkIsLogin()) {
+    if (!checkIsLogin(userLoadable.contents)) {
       navigate("/login");
     }
   }, []);

@@ -8,6 +8,7 @@ import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
 import { IFileList, IProductData, IUser } from "../../types";
 import { userSelector } from "../../recoil/user";
+import { checkIsLogin } from "../../util";
 
 type FormValues = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,21 +25,8 @@ function UploadPage() {
   const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();
 
-  const checkIsLogin = () => {
-    const sessionStorageKakaoId = sessionStorage.getItem("uid");
-
-    if (sessionStorageKakaoId) {
-      const { userId } = JSON.parse(sessionStorageKakaoId);
-      if (userLoadable.contents && userId) {
-        return true;
-      }
-      return false;
-    }
-    return false;
-  };
-
   useEffect(() => {
-    if (!checkIsLogin()) {
+    if (!checkIsLogin(userLoadable.contents)) {
       navigate("/login");
     }
   }, []);

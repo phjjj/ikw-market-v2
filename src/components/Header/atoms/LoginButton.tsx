@@ -12,6 +12,7 @@ function LoginButton() {
   const logoutHandler = useRecoilCallback(({ reset }) => () => {
     sessionStorage.removeItem("kakaoIdRecoilPerist");
     reset(userIdAtom);
+    navigate("/");
   });
 
   return (
