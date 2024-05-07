@@ -1,11 +1,11 @@
 import { IUser } from "../types";
 
 export const checkIsLogin = (user: IUser) => {
-  const sessionStorageKakaoId = sessionStorage.getItem("uid");
+  const sessionStorageUserId = sessionStorage.getItem("uid");
 
-  if (sessionStorageKakaoId) {
-    const { userId } = JSON.parse(sessionStorageKakaoId);
-    if (user && userId) {
+  if (sessionStorageUserId) {
+    const { userIdAtom } = JSON.parse(sessionStorageUserId);
+    if (user && userIdAtom) {
       return true;
     }
     return false;
