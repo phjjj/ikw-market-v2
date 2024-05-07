@@ -8,7 +8,7 @@ function ProductList({ productData }: { productData: IProductData[] }) {
     <ProductListWrapper>
       {productData.map((product) => (
         <ProductCard key={product.id}>
-          <Link to={`products/${product.id}`}>
+          <Link to={`/products/${product.id}`}>
             <ProductCard.Image
               className="sm"
               src={

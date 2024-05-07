@@ -86,34 +86,34 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
   }
 } // Make sure to import IProductData
 
-export async function getProduct(productId: string): Promise<IProductData> {
-  const condition = query(
-    collection(dbService, "products"),
-    where("id", "==", productId),
-  );
-  let productsSnapshot: QuerySnapshot<DocumentData, DocumentData> | undefined;
-  try {
-    productsSnapshot = await getDocs(condition);
-  } catch (error) {
-    console.log("Firestorage Read Product Document Error!");
-  }
+// export async function getProduct(productId: string): Promise<IProductData> {
+//   const condition = query(
+//     collection(dbService, "products"),
+//     where("id", "==", productId),
+//   );
+//   let productsSnapshot: QuerySnapshot<DocumentData, DocumentData> | undefined;
+//   try {
+//     productsSnapshot = await getDocs(condition);
+//   } catch (error) {
+//     console.log("Firestorage Read Product Document Error!");
+//   }
 
-  let product: IProductData = {
-    // Initialize with default values or ensure the object structure matches IProductData
-    title: "",
-    description: "",
-    price: 0,
-    location: "",
-    images: [],
-    // Add other properties as needed
-  };
+//   let product: IProductData = {
+//     // Initialize with default values or ensure the object structure matches IProductData
+//     title: "",
+//     description: "",
+//     price: 0,
+//     location: "",
+//     images: [],
+//     // Add other properties as needed
+//   };
 
-  productsSnapshot?.forEach((productDoc) => {
-    product = productDoc.data() as IProductData; // Cast to IProductData
-  });
+//   productsSnapshot?.forEach((productDoc) => {
+//     product = productDoc.data() as IProductData; // Cast to IProductData
+//   });
 
-  return product;
-}
+//   return product;
+// }
 // 유저 상품 목록
 export async function getUserProducts(userId: string) {
   const productQuery = query(

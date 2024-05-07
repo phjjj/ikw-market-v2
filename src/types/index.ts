@@ -26,15 +26,15 @@ export interface IUser {
 }
 
 export interface IProductData {
-  id: string;
-  userName: string;
+  id?: string;
+  userName?: string;
   title: string;
   description: string;
   price: number;
   location: string;
   images: IFileList[];
   userId: string;
-  createdAt: number;
+  createdAt?: number;
   commentList: [];
 }
 

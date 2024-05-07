@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
-import { IFileList, IProductData, IUser } from "../../types";
+import { IFileList, IProductData } from "../../types";
 import { userSelector } from "../../recoil/user";
 import { checkIsLogin } from "../../util";
 
@@ -38,7 +38,10 @@ function UploadPage() {
     const product: IProductData = {
       ...data,
       images,
-      userId: (userLoadable.contents as IUser)?.id,
+      userId:
+        userLoadable.state === "hasValue" && userLoadable.contents.id
+          ? userLoadable.contents.id
+          : "",
       commentList: [],
     };
 

@@ -9,7 +9,7 @@ import {
   updateProduct,
   uploadProductImgFile,
 } from "../../lib/db/product";
-import { IFileList, IProductData, IUser } from "../../types";
+import { IFileList, IProductData } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
@@ -67,7 +67,10 @@ function ProductUpdatePage() {
     const updateProductData: IProductData = {
       ...data,
       images: fileList,
-      userId: (userLoadable.contents as IUser)?.id,
+      userId:
+        userLoadable.state === "hasValue" && userLoadable.contents.id
+          ? userLoadable.contents.id
+          : "",
       commentList: [],
     };
 

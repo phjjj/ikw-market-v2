@@ -57,7 +57,7 @@ function ProductDetail() {
       ) : (
         <>
           <Image images={product.images} />
-          <UserName body={product.userName} />
+          <UserName body={product.userName || ""} />
           <hr style={{ width: "100%", margin: "0" }} />
           <ProductInfo>
             <ProductInfo.Name body={product.title} />

@@ -5,10 +5,10 @@ import {
 } from "react-icons/md";
 import { useState } from "react";
 import ProductImage from "../../../../components/common/atoms/ProductImage";
-import { IImage } from "../../../../types";
+import { IFileList } from "../../../../types";
 
 type ImageType = {
-  images: IImage[];
+  images: IFileList[];
 };
 
 function Image({ images }: ImageType) {
