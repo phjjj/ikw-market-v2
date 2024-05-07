@@ -1,17 +1,19 @@
 import { useRecoilValue, useRecoilCallback } from "recoil";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { userIdAtom } from "../../../recoil/user";
 
 function LoginButton() {
   const kakaoId = useRecoilValue(userIdAtom);
   const navigate = useNavigate();
-
-  const navigateHandler = () => navigate("/login");
+  const location = useLocation();
+  const navigateHandler = () =>
+    navigate("/login", { state: { path: location.pathname } });
 
   const logoutHandler = useRecoilCallback(({ reset }) => () => {
     sessionStorage.removeItem("kakaoIdRecoilPerist");
     reset(userIdAtom);
+    navigate("/");
   });
 
   return (

@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import Title from "../../components/common/atoms/Title";
 import logo from "../../assets/logo/logo.png";
 import kakaoButton from "../../assets/button/kakao_login_medium_narrow.png";
 
 function LoginPage() {
-  const kakaoLink = `${process.env.REACT_APP_KAKAO_OAUTH_URL}?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+  const {
+    state: { path },
+  } = useLocation();
 
+  const kakaoLink = `${process.env.REACT_APP_KAKAO_OAUTH_URL}?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code&state=${path}`;
   const kakaoLoginHandler = () => {
     window.location.href = kakaoLink;
   };

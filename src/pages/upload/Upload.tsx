@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
+import { useRecoilValueLoadable } from "recoil";
+import { useLocation, useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
-import { IProductData, IUser } from "../../types";
+import { IFileList, IProductData, IUser } from "../../types";
 import { userSelector } from "../../recoil/user";
+import { checkIsLogin } from "../../util";
 
 type FormValues = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,27 +20,15 @@ type FormValues = {
 };
 
 function UploadPage() {
-  const [fileList, setFileList] = useState<File[]>([]);
+  const [fileList, setFileList] = useState<IFileList[]>([]);
   const { register, handleSubmit } = useForm<FormValues>();
-  const user = useRecoilValue(userSelector);
+  const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();
-
-  const checkIsLogin = () => {
-    const sessionStorageKakaoId = sessionStorage.getItem("kakaoIdRecoilPerist");
-
-    if (sessionStorageKakaoId) {
-      const { kakaoId } = JSON.parse(sessionStorageKakaoId);
-      if (user && kakaoId) {
-        return true;
-      }
-      return false;
-    }
-    return false;
-  };
+  const location = useLocation();
 
   useEffect(() => {
-    if (!checkIsLogin()) {
-      navigate("/login");
+    if (!checkIsLogin(userLoadable.contents)) {
+      navigate("/login", { state: { path: location.pathname } });
     }
   }, []);
 
@@ -49,7 +38,7 @@ function UploadPage() {
     const product: IProductData = {
       ...data,
       images,
-      userId: (user as IUser)?.id,
+      userId: (userLoadable.contents as IUser)?.id,
       commentList: [],
     };
 
@@ -80,6 +69,7 @@ function UploadPage() {
             labelText={item.label}
             maxLength={item.maxLength}
             register={register}
+            value={item.type === "number" ? 0 : ""}
           />
         ))}
         <UploadForm.Textarea
@@ -87,6 +77,7 @@ function UploadPage() {
           labelText={textAreaFormatted.label}
           maxLength={textAreaFormatted.maxLength}
           register={register}
+          value=""
         />
         <UploadForm.Button>등록 하기</UploadForm.Button>
       </UploadForm>

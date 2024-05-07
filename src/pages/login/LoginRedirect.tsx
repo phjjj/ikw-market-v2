@@ -8,9 +8,9 @@ import { userIdAtom } from "../../recoil/user";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
+  const prevPath = new URL(window.location.href).searchParams.get("state");
   const grantType = "authorization_code";
   const navigate = useNavigate();
-
   const setUserId = useSetRecoilState(userIdAtom);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ function LoginRedirect() {
               };
               const user = await userAddDoc(userObj);
               setUserId(user.id);
-              navigate("/");
+              navigate(prevPath || "/");
             });
         });
     }

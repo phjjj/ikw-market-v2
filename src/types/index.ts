@@ -32,13 +32,14 @@ export interface IProductData {
   description: string;
   price: number;
   location: string;
-  images: IImage[];
+  images: IFileList[];
   userId: string;
   createdAt: number;
   commentList: [];
 }
 
-export interface IImage {
-  ref: string;
+export interface IFileList {
+  data?: File;
   url: string;
+  ref?: string;
 }
