@@ -26,6 +26,7 @@ export async function checkUser(kakaoId: number): Promise<IUser | null> {
   return userData;
 }
 
+// 회원등록
 export async function userAddDoc(userObj: IUser) {
   const checkUserObj = await checkUser(userObj.kakaoId);
 
@@ -47,7 +48,9 @@ export async function userAddDoc(userObj: IUser) {
   }
   return checkUserObj;
 }
+
 // thorw err 발생시킨다 -> recoilSeletor에서 haserr 상태 업데이트 -> 굿
+// 유저 정보
 export async function getUserDoc(identifier: string): Promise<IUser> {
   try {
     const condition = query(

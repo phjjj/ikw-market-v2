@@ -5,12 +5,14 @@ import {
 } from "react-icons/md";
 import { useState } from "react";
 import ProductImage from "../../../../components/common/atoms/ProductImage";
+import { IImage } from "../../../../types";
 
 type ImageType = {
-  images: string[];
+  images: IImage[];
 };
 
 function Image({ images }: ImageType) {
+  console.log(images);
   const [visibel, setVisibel] = useState(0);
 
   const onClickNextImage = () =>
@@ -26,7 +28,7 @@ function Image({ images }: ImageType) {
       <MdOutlineArrowBackIosNew onClick={onClickPrevImage} size={30} />
       {images.map((image, idx) =>
         idx === visibel ? (
-          <ProductImage className="lg" key={image} src={image} />
+          <ProductImage className="lg" key={image.url} src={image.url} />
         ) : null,
       )}
       <MdOutlineArrowForwardIos onClick={onClickNextImage} size={30} />
