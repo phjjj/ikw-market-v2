@@ -7,16 +7,19 @@ interface InputProps {
   maxLength?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>;
+  value?: string;
 }
 
-function UploadTextarea({ labelText, maxLength, register }: InputProps) {
-  const [textareaValue, setTextareaValue] = useState("");
+function UploadTextarea({ labelText, maxLength, register, value }: InputProps) {
+  const [textareaValue, setTextareaValue] = useState(value);
 
   return (
     <InputContainer>
       <Label htmlFor={labelText}>
         <span>{labelText}</span>
-        {maxLength && <span>{`${textareaValue.length} / ${maxLength}`}</span>}
+        {maxLength && (
+          <span>{`${typeof textareaValue === "string" && textareaValue.length} / ${maxLength}`}</span>
+        )}
       </Label>
       <Textarea
         // eslint-disable-next-line react/jsx-props-no-spreading

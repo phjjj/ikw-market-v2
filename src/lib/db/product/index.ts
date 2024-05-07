@@ -15,19 +15,21 @@ import {
   where,
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
-import { IImage, IProductData } from "../../../types";
+import { IFileList, IProductData } from "../../../types";
 
-async function fileImgUpload(fileList: File[]) {
-  const images: IImage[] = [];
+async function fileImgUpload(fileList: IFileList[]) {
+  const images: IFileList[] = [];
 
   if (fileList.length > 0) {
     try {
       // eslint-disable-next-line no-restricted-syntax
       for (const file of fileList) {
         const locationRef = ref(storageService, `products/${uuidv4()}`);
-        const result = await uploadBytes(locationRef, file);
-        const productImgUrl = await getDownloadURL(result.ref);
-        images.push({ url: productImgUrl, ref: locationRef.toString() });
+        if (file.data) {
+          const result = await uploadBytes(locationRef, file.data);
+          const productImgUrl = await getDownloadURL(result.ref);
+          images.push({ url: productImgUrl, ref: locationRef.toString() });
+        }
       }
       return images;
     } catch (error) {
@@ -40,8 +42,8 @@ async function fileImgUpload(fileList: File[]) {
 }
 
 export async function uploadProductImgFile(
-  fileList: File[],
-): Promise<IImage[]> {
+  fileList: IFileList[],
+): Promise<IFileList[]> {
   const images = await fileImgUpload(fileList);
 
   return images;
@@ -65,6 +67,15 @@ export async function uploadProduct(product: IProductData) {
   }
 }
 
+export async function updateProduct(productId: string, product: IProductData) {
+  const productDocumentRef = doc(dbService, "products", productId);
+  try {
+    await updateDoc(productDocumentRef, { ...product });
+  } catch (error) {
+    console.log("Firestore 상품 업데이트 통신 에러 : ", error);
+  }
+}
+
 export async function deleteProductImageFile(deleteImgRefStr: string[]) {
   // deleteImgRefStr 배열 요소 값 형식은 ["이미지 참조1", "이미지 참조2" ];
   // eslint-disable-next-line no-restricted-syntax
@@ -72,6 +83,35 @@ export async function deleteProductImageFile(deleteImgRefStr: string[]) {
     const imageRef = ref(storageService, deleteImgRef);
     await deleteObject(imageRef);
   }
+} // Make sure to import IProductData
+
+export async function getProduct(productId: string): Promise<IProductData> {
+  const condition = query(
+    collection(dbService, "products"),
+    where("id", "==", productId),
+  );
+  let productsSnapshot: QuerySnapshot<DocumentData, DocumentData> | undefined;
+  try {
+    productsSnapshot = await getDocs(condition);
+  } catch (error) {
+    console.log("Firestorage Read Product Document Error!");
+  }
+
+  let product: IProductData = {
+    // Initialize with default values or ensure the object structure matches IProductData
+    title: "",
+    description: "",
+    price: 0,
+    location: "",
+    images: [],
+    // Add other properties as needed
+  };
+
+  productsSnapshot?.forEach((productDoc) => {
+    product = productDoc.data() as IProductData; // Cast to IProductData
+  });
+
+  return product;
 }
 
 export async function getUserProducts(userId: string) {

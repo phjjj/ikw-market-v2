@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import Nav from "./molecules/Nav";
 import Logo from "./atoms/Logo";
 import LoginButton from "./atoms/LoginButton";
