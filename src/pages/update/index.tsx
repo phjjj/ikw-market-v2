@@ -52,10 +52,6 @@ function ProductUpdatePage() {
     }
   }, []);
 
-  console.log("해당 상품 이미지들 : ", fileList);
-  console.log("해당 상품 업로드 할 이미지 : ", uploadFileList);
-  console.log("삭제 할 이미지 파일 참조값 : ", deletedImageFileRef);
-
   const inputList = [
     { label: "상품명", maxLength: 20 },
     { label: "가격", type: "number" },

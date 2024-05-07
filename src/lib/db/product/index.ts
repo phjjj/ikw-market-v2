@@ -71,7 +71,6 @@ export async function uploadProduct(product: IProductData) {
 
 export async function updateProduct(productId: string, product: IProductData) {
   const productDocumentRef = doc(dbService, "products", productId);
-  console.log("업테이트 상품 : ", product);
   try {
     await updateDoc(productDocumentRef, { ...product });
   } catch (error) {

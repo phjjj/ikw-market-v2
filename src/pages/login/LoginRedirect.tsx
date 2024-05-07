@@ -13,7 +13,6 @@ function LoginRedirect() {
   const navigate = useNavigate();
   const setUserId = useSetRecoilState(userIdAtom);
 
-  console.log(window.location.href, prevPath);
   useEffect(() => {
     if (code) {
       axios
