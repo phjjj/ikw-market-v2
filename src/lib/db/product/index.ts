@@ -6,8 +6,11 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import {
+  DocumentData,
+  DocumentSnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -171,4 +174,29 @@ export async function getProduct(productId: string) {
     return productData;
   }
   throw new Error("상품을 찾을 수 없습니다.");
+}
+
+export async function deleteProduct(productId: string, deletingUserId: string) {
+  // deletingUserId 인자는 삭제하고자 하는 userId.
+  const productDocRef = doc(dbService, "products", productId);
+  let productDocSnapshot: DocumentSnapshot<DocumentData, DocumentData>;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    productDocSnapshot = await getDoc(productDocRef);
+  } catch (_) {
+    throw new Error("해당 상품 불러오기 요청 에러");
+  }
+
+  if (productDocSnapshot.exists()) {
+    const productData = productDocSnapshot.data() as IProductData;
+    const { userId } = productData;
+
+    if (deletingUserId === userId) {
+      try {
+        await deleteDoc(productDocRef);
+      } catch (_) {
+        throw new Error("해당 상품 삭제 요청 에러 ");
+      }
+    }
+  }
 }
