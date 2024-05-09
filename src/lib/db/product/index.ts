@@ -189,13 +189,22 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
 
   if (productDocSnapshot.exists()) {
     const productData = productDocSnapshot.data() as IProductData;
-    const { userId } = productData;
+    const { userId, images } = productData;
+
+    const imageRefs = images.map((data) => data.ref as string);
 
     if (deletingUserId === userId) {
       try {
         await deleteDoc(productDocRef);
       } catch (_) {
         throw new Error("해당 상품 삭제 요청 에러 ");
+      }
+      try {
+        if (imageRefs.length > 0) {
+          await deleteProductImageFile(imageRefs);
+        }
+      } catch (_) {
+        throw new Error("해당 상품 이미지 삭제 요청 에러");
       }
     }
   }

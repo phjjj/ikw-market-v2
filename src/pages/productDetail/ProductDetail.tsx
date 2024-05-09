@@ -65,8 +65,8 @@ function ProductDetail() {
             <ProductInfo.Location body={product.location} />
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
-          {/*
-          <button
+
+          {/* <button
             onClick={async () => {
               if (product?.id) {
                 await deleteProduct(product.id, "ZBIqGwPZucIje7LY6aYT");
@@ -76,8 +76,8 @@ function ProductDetail() {
             }}
           >
             삭제하기
-          </button>
-            */}
+          </button> */}
+
           {/* <CommentList commentData={product.commentList} /> */}
         </>
       )}
