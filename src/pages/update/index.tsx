@@ -9,20 +9,11 @@ import {
   updateProduct,
   uploadProductImgFile,
 } from "../../lib/db/product";
-import { IFileList, IProductData } from "../../types";
+import { FormValues, IFileList, IProductData } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import { checkIsFormValidation, checkIsLogin } from "../../util";
-
-type FormValues = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  images: void | string[];
-  title: string;
-  price: number;
-  location: string;
-  description: string;
-};
 
 function ProductUpdatePage() {
   const { id: productId } = useParams();
