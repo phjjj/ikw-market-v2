@@ -42,7 +42,7 @@ function UploadPage() {
         userLoadable.state === "hasValue" && userLoadable.contents.id
           ? userLoadable.contents.id
           : "",
-      commentList: [],
+      commentListId: "",
     };
 
     await uploadProduct(product);

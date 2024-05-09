@@ -71,7 +71,6 @@ function ProductUpdatePage() {
         userLoadable.state === "hasValue" && userLoadable.contents.id
           ? userLoadable.contents.id
           : "",
-      commentList: [],
     };
 
     if (deletedImageFileRef.length > 0) {

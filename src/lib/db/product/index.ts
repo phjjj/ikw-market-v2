@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
 import { IFileList, IProductData } from "../../../types";
+import { createCommentList } from "../commentList";
 
 async function fileImgUpload(fileList: IFileList[]) {
   const images: IFileList[] = [];
@@ -62,9 +63,16 @@ export async function uploadProduct(product: IProductData) {
 
     const productDocumentRef = doc(dbService, "products", productDocument.id);
 
+    // 초기 commentList 컬렉션 생성 및 문서 생성.
+    const commentListId = await createCommentList({
+      productId: productDocumentRef.id,
+      comments: [],
+    });
+
     await updateDoc(productDocumentRef, {
       id: productDocument.id,
       createdAt: Date.now(),
+      commentListId,
     });
   } catch (error) {
     console.log(error);
@@ -179,6 +187,7 @@ export async function getProduct(productId: string) {
 export async function deleteProduct(productId: string, deletingUserId: string) {
   // deletingUserId 인자는 삭제하고자 하는 userId.
   const productDocRef = doc(dbService, "products", productId);
+
   let productDocSnapshot: DocumentSnapshot<DocumentData, DocumentData>;
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -189,7 +198,7 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
 
   if (productDocSnapshot.exists()) {
     const productData = productDocSnapshot.data() as IProductData;
-    const { userId, images } = productData;
+    const { userId, images, commentListId } = productData;
 
     const imageRefs = images.map((data) => data.ref as string);
 
@@ -205,6 +214,18 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
         }
       } catch (_) {
         throw new Error("해당 상품 이미지 삭제 요청 에러");
+      }
+      try {
+        if (commentListId) {
+          const commentListDocRef = doc(
+            dbService,
+            "commentList",
+            commentListId,
+          );
+          await deleteDoc(commentListDocRef);
+        }
+      } catch (error) {
+        throw new Error(`해당 CommentList 문서 삭제 요청 에러 : ${error}`);
       }
     }
   }
