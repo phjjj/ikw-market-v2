@@ -6,22 +6,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
-import { IFileList, IProductData } from "../../types";
+import { FormValues, IFileList, IProductData } from "../../types";
 import { userSelector } from "../../recoil/user";
-import { checkIsLogin } from "../../util";
-
-type FormValues = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  images: void | string[];
-  title: string;
-  price: number;
-  location: string;
-  description: string;
-};
+import { checkIsFormValidation, checkIsLogin } from "../../util";
 
 function UploadPage() {
   const [fileList, setFileList] = useState<IFileList[]>([]);
-  const { register, handleSubmit } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
   const userLoadable = useRecoilValueLoadable(userSelector);
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,6 +28,11 @@ function UploadPage() {
   }, []);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!checkIsFormValidation(errors, fileList)) {
+      alert("상품 등록 입력창 작성 안한부분 있습니다!");
+      return;
+    }
+
     const images = await uploadProductImgFile(fileList);
 
     const product: IProductData = {

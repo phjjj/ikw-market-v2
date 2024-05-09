@@ -1,4 +1,5 @@
-import { IUser } from "../types";
+import { FieldErrors } from "react-hook-form";
+import { FormValues, IFileList, IUser } from "../types";
 
 export const checkIsLogin = (user: IUser) => {
   const sessionStorageUserId = sessionStorage.getItem("uid");
@@ -11,4 +12,20 @@ export const checkIsLogin = (user: IUser) => {
     return false;
   }
   return false;
+};
+
+export const checkIsFormValidation = (
+  errors: FieldErrors<FormValues>,
+  fileList: IFileList[],
+) => {
+  if (
+    errors.description ||
+    errors.price ||
+    errors.title ||
+    fileList.length === 0
+  ) {
+    return false;
+  }
+
+  return true;
 };

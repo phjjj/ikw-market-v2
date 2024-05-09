@@ -55,3 +55,11 @@ export interface IFileList {
   url: string;
   ref?: string;
 }
+
+export interface FormValues {
+  images: void | string[];
+  title: string;
+  price: number;
+  location: string;
+  description: string;
+}
