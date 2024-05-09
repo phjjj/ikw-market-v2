@@ -65,6 +65,19 @@ function ProductDetail() {
             <ProductInfo.Location body={product.location} />
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
+
+          {/* <button
+            onClick={async () => {
+              if (product?.id) {
+                await deleteProduct(product.id, "ZBIqGwPZucIje7LY6aYT");
+              } else {
+                console.error("Product ID is undefined");
+              }
+            }}
+          >
+            삭제하기
+          </button> */}
+
           {/* <CommentList commentData={product.commentList} /> */}
         </>
       )}
