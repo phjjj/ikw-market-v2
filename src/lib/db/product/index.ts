@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
 import { IFileList, IProductData } from "../../../types";
-import { getProductCommentList, getUserName } from "./util";
+import { getProductCommentList, getUser } from "./util";
 
 async function fileImgUpload(fileList: IFileList[]) {
   const images: IFileList[] = [];
@@ -114,9 +114,9 @@ export async function getAllProducts() {
     const productData = product.data() as IProductData;
     const { userId, commentListId } = productData;
 
-    // 사용자 이름 가져오기
-    const userName = await getUserName(userId);
-    productData.userName = userName;
+    // 유저 정보 가져오기
+    const user = await getUser(userId);
+    productData.userName = user.name;
 
     // 댓글 목록 가져오기
     productData.comments = await getProductCommentList(commentListId);
@@ -136,7 +136,8 @@ export async function getProduct(productId: string) {
     const { userId, commentListId } = productData;
 
     // 유저 정보 가져오기
-    productData.userName = await getUserName(userId);
+    const user = await getUser(userId);
+    productData.userName = user.name;
     // 댓글 목록 가져오기
     productData.comments = await getProductCommentList(commentListId);
 
