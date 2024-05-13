@@ -35,7 +35,22 @@ export interface IProductData {
   images: IFileList[];
   userId: string;
   createdAt?: number;
-  commentList: [];
+  commentListId: string;
+  comments: ICommentList;
+}
+
+export interface ICommentList {
+  comments: IComments[];
+  id: string;
+  productId: string;
+}
+
+export interface IComments {
+  userId: string;
+  text: string;
+  createdAt: string;
+  userName: string;
+  userImage: string;
 }
 
 export interface IFileList {
