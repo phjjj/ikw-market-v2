@@ -1,10 +1,14 @@
 import {
   DocumentData,
   DocumentReference,
+  Timestamp,
   addDoc,
   collection,
   doc,
+  getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { ICommentList } from "../../../types";
 import { dbService } from "../../../firebase/config";
@@ -39,4 +43,46 @@ export async function createCommentList(data: ICommentList) {
   return commentDocument ? commentDocument.id : null;
 }
 
-// 댓글 추가
+// 댓글 작성
+export async function submitComment(
+  productId: string,
+  text: string,
+  userId: string,
+) {
+  try {
+    // productId에 해당하는 댓글 리스트 컬렉션을 쿼리합니다.
+    const commentListQuery = query(
+      collection(dbService, "commentList"),
+      where("productId", "==", productId),
+    );
+
+    // 댓글 리스트 컬렉션의 문서를 가져옵니다.
+    const commentListDocs = await getDocs(commentListQuery);
+    if (commentListDocs.empty) {
+      console.error(
+        `productId가 ${productId}인 댓글 리스트를 찾을 수 없습니다.`,
+      );
+      return;
+    }
+
+    // 댓글 리스트 컬렉션의 첫 번째 문서를 가져옵니다.
+    const commentListDoc = commentListDocs.docs[0];
+    const commentListData = commentListDoc.data();
+
+    // 현재 댓글 배열을 가져옵니다.
+    const comments = commentListData.comments || [];
+
+    // 새로운 댓글을 추가합니다.
+    const newComment = {
+      userId,
+      text,
+      createdAt: Timestamp.now(), // 현재 시간을 사용하여 Timestamp 생성
+    };
+    comments.push(newComment);
+
+    // 댓글 리스트 문서를 업데이트합니다.
+    await updateDoc(commentListDoc.ref, { comments });
+  } catch (error) {
+    console.error("댓글 추가 중 에러 발생:", error);
+  }
+}
