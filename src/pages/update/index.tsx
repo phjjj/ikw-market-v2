@@ -9,27 +9,22 @@ import {
   updateProduct,
   uploadProductImgFile,
 } from "../../lib/db/product";
-import { IFileList, IProductData } from "../../types";
+import { FormValues, IFileList, IProductData } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
-import { checkIsLogin } from "../../util";
-
-type FormValues = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  images: void | string[];
-  title: string;
-  price: number;
-  location: string;
-  description: string;
-};
+import { checkIsFormValidation, checkIsLogin } from "../../util";
 
 function ProductUpdatePage() {
   const { id: productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState<IProductData>();
   const userLoadable = useRecoilValueLoadable(userSelector);
-  const { register, handleSubmit } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
   const [fileList, setFileList] = useState<IFileList[]>([]);
   const [deletedImageFileRef, setDeletedImageFileRef] = useState<string[]>([]);
   const [uploadFileList, setUploadFileList] = useState<IFileList[]>([]);
@@ -64,6 +59,11 @@ function ProductUpdatePage() {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!checkIsFormValidation(errors, fileList)) {
+      alert("상품 등록 입력창 작성 안한부분 있습니다!");
+      return;
+    }
+
     const updateProductData: IProductData = {
       ...data,
       images: fileList,
