@@ -6,8 +6,11 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import {
+  DocumentData,
+  DocumentSnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -18,6 +21,7 @@ import {
 import { dbService, storageService } from "../../../firebase/config";
 import { IFileList, IProductData } from "../../../types";
 import { getProductCommentList, getUser } from "./util";
+import { createCommentList } from "../commentList";
 
 async function fileImgUpload(fileList: IFileList[]) {
   const images: IFileList[] = [];
@@ -60,9 +64,16 @@ export async function uploadProduct(product: IProductData) {
 
     const productDocumentRef = doc(dbService, "products", productDocument.id);
 
+    // 초기 commentList 컬렉션 생성 및 문서 생성.
+    const commentListId = await createCommentList({
+      productId: productDocumentRef.id,
+      comments: [],
+    });
+
     await updateDoc(productDocumentRef, {
       id: productDocument.id,
       createdAt: Date.now(),
+      commentListId,
     });
   } catch (error) {
     console.log(error);
@@ -145,4 +156,51 @@ export async function getProduct(productId: string) {
   }
 
   throw new Error("상품을 찾을 수 없습니다.");
+}
+
+export async function deleteProduct(productId: string, deletingUserId: string) {
+  // deletingUserId 인자는 삭제하고자 하는 userId.
+  const productDocRef = doc(dbService, "products", productId);
+
+  let productDocSnapshot: DocumentSnapshot<DocumentData, DocumentData>;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    productDocSnapshot = await getDoc(productDocRef);
+  } catch (_) {
+    throw new Error("해당 상품 불러오기 요청 에러");
+  }
+
+  if (productDocSnapshot.exists()) {
+    const productData = productDocSnapshot.data() as IProductData;
+    const { userId, images, commentListId } = productData;
+
+    const imageRefs = images.map((data) => data.ref as string);
+
+    if (deletingUserId === userId) {
+      try {
+        await deleteDoc(productDocRef);
+      } catch (_) {
+        throw new Error("해당 상품 삭제 요청 에러 ");
+      }
+      try {
+        if (imageRefs.length > 0) {
+          await deleteProductImageFile(imageRefs);
+        }
+      } catch (_) {
+        throw new Error("해당 상품 이미지 삭제 요청 에러");
+      }
+      try {
+        if (commentListId) {
+          const commentListDocRef = doc(
+            dbService,
+            "commentList",
+            commentListId,
+          );
+          await deleteDoc(commentListDocRef);
+        }
+      } catch (error) {
+        throw new Error(`해당 CommentList 문서 삭제 요청 에러 : ${error}`);
+      }
+    }
+  }
 }

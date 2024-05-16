@@ -42,6 +42,12 @@ export interface IProductData {
 export interface ICommentList {
   comments: IComments[];
   id: string;
+  commentListId?: string;
+}
+
+export interface ICommentList {
+  comments?: IComments[];
+  id?: string;
   productId: string;
 }
 
@@ -51,10 +57,21 @@ export interface IComments {
   createdAt: string;
   userName: string;
   userImage: string;
+  id: string;
+  text: string;
+  createdAt: number;
 }
 
 export interface IFileList {
   data?: File;
   url: string;
   ref?: string;
+}
+
+export interface FormValues {
+  images: void | string[];
+  title: string;
+  price: number;
+  location: string;
+  description: string;
 }
