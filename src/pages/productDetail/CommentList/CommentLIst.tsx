@@ -1,33 +1,31 @@
+// CommentList.tsx
 import styled from "styled-components";
 import CommentInfo from "./molecules/CommentInfo";
 import CommentWriter from "./molecules/CommentWriter";
+import { IComments } from "../../../types";
 
-interface ICommentData {
-  username: string;
-  userImage: string;
-  text: string;
-  date: string;
+interface Props {
+  commentData: IComments[];
+  onSubmitComment: (text: string) => void;
 }
-function CommentList({ commentData }: { commentData: ICommentData[] }) {
+
+function CommentList({ commentData, onSubmitComment }: Props) {
   return (
     <CommentListContainer>
       <div>
         <h3>댓글</h3>
       </div>
       {commentData.map((comment) => (
-        <CommentInfo key={comment.username}>
+        <CommentInfo key={comment.userId}>
           <CommentInfo.UserImage image={comment.userImage} />
           <div>
-            <CommentInfo.UserName body={comment.username} />
+            <CommentInfo.UserName body={comment.userName} />
             <CommentInfo.Text body={comment.text} />
-            <CommentInfo.Date body={comment.date} />
+            <CommentInfo.Date body={comment.createdAt} />
           </div>
         </CommentInfo>
       ))}
-      <CommentWriter>
-        <CommentWriter.TextArea />
-        <CommentWriter.Button />
-      </CommentWriter>
+      <CommentWriter onSubmit={onSubmitComment} />
     </CommentListContainer>
   );
 }

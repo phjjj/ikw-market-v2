@@ -1,4 +1,4 @@
-/* eslint-disable react/button-has-type */
+// ProductDetail.tsx
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
@@ -6,20 +6,19 @@ import { useLocation } from "react-router-dom";
 import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
 import Image from "./ProductInfo/molecules/ImageSlide";
-// import CommentList from "./CommentList/CommentLIst";
+import CommentList from "./CommentList/CommentLIst";
 
 import { IProductData } from "../../types";
 import { getProduct } from "../../lib/db/product";
-import { allProductsAtom } from "../../recoil/user";
+import { allProductsAtom, userIdAtom } from "../../recoil/user";
+import { submitComment } from "../../lib/db/commentList";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
-  // console.log(allProducts);
   const [product, setProduct] = useState<IProductData | null>(null);
-
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
-
+  const userId = useRecoilValue(userIdAtom);
   useEffect(() => {
     if (allProducts.length) {
       const productData = allProducts.find((p) => p.id === productId);
@@ -35,20 +34,10 @@ function ProductDetail() {
     }
   }, [allProducts, productId]);
 
-  // useEffect(() => {
-  //   // productsLoadable 값이 유효할 경우, fetch x
-  //   if (productsLoadable.state === "hasValue") {
-  //     setProduct(productsLoadable.contents);
-  //   } else if (productsLoadable.state === "hasError") {
-  //     // 값이 없을경우, 새로고침 하거나 링크로 바로 들어 올 경우
-  //     const fetchData = async () => {
-  //       const productData = await getProduct(productId);
-  //       setProduct(productData);
-  //     };
-
-  //     fetchData();
-  //   }
-  // }, [productsLoadable]);
+  const handleSubmitComment = (text: string) => {
+    submitComment(productId, text, userId);
+    console.log("댓글 제출:", text);
+  };
 
   return (
     <ProductDetailWrapper>
@@ -66,6 +55,10 @@ function ProductDetail() {
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
 
+          <CommentList
+            commentData={product.comments.comments}
+            onSubmitComment={handleSubmitComment}
+          />
           {/* <button
             onClick={async () => {
               if (product?.id) {
@@ -88,7 +81,6 @@ function ProductDetail() {
 const ProductDetailWrapper = styled.main`
   display: flex;
   flex-direction: column;
-  /* background-color: pink; */
   align-items: center;
   max-width: 674px;
   margin: 0 auto;
