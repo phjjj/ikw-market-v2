@@ -66,15 +66,15 @@ function ProductUpdatePage() {
     }
 
     const updateProductData: IProductData = {
-      ...data,
+      ...data, // 입력 받은 데이터들.
       images: fileList,
       userId:
         userLoadable.state === "hasValue" && userLoadable.contents.id
           ? userLoadable.contents.id
           : "",
-      commentListId: product?.commentListId ?? "",
-      createdAt: 0,
-      id: "",
+      id: product?.id || "",
+      createdAt: product?.createdAt || 0,
+      commentListId: product?.commentListId || "",
     };
 
     if (deletedImageFileRef.length > 0) {

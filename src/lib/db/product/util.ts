@@ -52,3 +52,10 @@ export async function getProductCommentList(commentListId: string) {
     throw new Error(`댓글 목록을 가져오는 중 에러 발생: ${error}`);
   }
 }
+
+// 파이어베이스 문서 참조 만들어주는 함수.
+export function makeDocRef(collectionName: string, id: string) {
+  const docRef = doc(dbService, collectionName, id);
+
+  return docRef;
+}
