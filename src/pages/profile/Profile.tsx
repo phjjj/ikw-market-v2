@@ -5,8 +5,9 @@ import UserInfo from "./molecules/UserInfo";
 import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
 import { userSelector } from "../../recoil/user";
-import { IProductData, IUser } from "../../types";
 import { getUserProducts } from "../../lib/db/product";
+import { IProductData } from "../../types/product";
+import { IUser } from "../../types/user";
 
 function ProfilePage() {
   const userSelectorLoadable = useRecoilValueLoadable(userSelector);
@@ -16,6 +17,7 @@ function ProfilePage() {
     name: "",
     kakaoId: 0,
     image: "",
+    createdAt: 0,
   });
 
   useEffect(() => {

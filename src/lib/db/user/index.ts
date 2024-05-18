@@ -8,7 +8,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { dbService } from "../../../firebase/config";
-import { IUser } from "../../../types";
+import { IUser } from "../../../types/user";
 
 export async function checkUser(kakaoId: number): Promise<IUser | null> {
   const userQuery = query(

@@ -19,9 +19,10 @@ import {
   where,
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
-import { IFileList, IProductData } from "../../../types";
+import { IFileList } from "../../../types";
 import { getProductCommentList, getUser } from "./util";
 import { createCommentList } from "../commentList";
+import { IProductData } from "../../../types/product";
 
 async function fileImgUpload(fileList: IFileList[]) {
   const images: IFileList[] = [];
@@ -68,6 +69,7 @@ export async function uploadProduct(product: IProductData) {
     const commentListId = await createCommentList({
       productId: productDocumentRef.id,
       comments: [],
+      id: "",
     });
 
     await updateDoc(productDocumentRef, {

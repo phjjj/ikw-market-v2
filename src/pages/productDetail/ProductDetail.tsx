@@ -7,11 +7,10 @@ import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
 import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
-
-import { IProductData } from "../../types";
 import { getProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
 import { submitComment } from "../../lib/db/commentList";
+import { IProductData } from "../../types/product";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
@@ -56,7 +55,7 @@ function ProductDetail() {
           </ProductInfo>
 
           <CommentList
-            commentData={product.comments.comments}
+            commentData={product.comments ? product.comments.comments : []}
             onSubmitComment={handleSubmitComment}
           />
           {/* <button

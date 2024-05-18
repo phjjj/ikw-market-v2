@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../../firebase/config";
-import { ICommentList, IComments, IUser } from "../../../types";
+import { ICommentList, IComments } from "../../../types/comment";
+import { IUser } from "../../../types/user";
 
 // 유저 정보 가져오기
 export async function getUser(userId: string): Promise<IUser> {

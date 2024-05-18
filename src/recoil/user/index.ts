@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { getUserDoc } from "../../lib/db/user";
-import { IProductData } from "../../types";
+import { IProductData } from "../../types/product";
 
 const { persistAtom: userIdPeristAtom } = recoilPersist({
   key: "uid",

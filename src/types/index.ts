@@ -5,63 +5,6 @@ export interface ReactChildrenProps {
   className?: string;
 }
 
-export interface IKakaoUserResultData {
-  data: {
-    id: number;
-    kakao_account: {
-      profile: {
-        nickname: string;
-        profile_image_url: string;
-      };
-    };
-  };
-}
-
-export interface IUser {
-  id?: string | undefined;
-  kakaoId: number;
-  name: string;
-  image: string | null;
-  createdAt?: number;
-}
-
-export interface IProductData {
-  id?: string;
-  userName?: string;
-  title: string;
-  description: string;
-  price: number;
-  location: string;
-  images: IFileList[];
-  userId: string;
-  createdAt?: number;
-  commentListId: string;
-  comments: ICommentList;
-}
-
-export interface ICommentList {
-  comments: IComments[];
-  id: string;
-  commentListId?: string;
-}
-
-export interface ICommentList {
-  comments?: IComments[];
-  id?: string;
-  productId: string;
-}
-
-export interface IComments {
-  userId: string;
-  text: string;
-  createdAt: string;
-  userName: string;
-  userImage: string;
-  id: string;
-  text: string;
-  createdAt: number;
-}
-
 export interface IFileList {
   data?: File;
   url: string;
@@ -69,7 +12,7 @@ export interface IFileList {
 }
 
 export interface FormValues {
-  images: void | string[];
+  images: string[] | [];
   title: string;
   price: number;
   location: string;

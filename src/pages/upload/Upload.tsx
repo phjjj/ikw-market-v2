@@ -6,9 +6,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import Title from "../../components/common/atoms/Title";
 import { uploadProduct, uploadProductImgFile } from "../../lib/db/product";
-import { FormValues, IFileList, IProductData } from "../../types";
+import { FormValues, IFileList } from "../../types";
 import { userSelector } from "../../recoil/user";
 import { checkIsFormValidation, checkIsLogin } from "../../util";
+import { IProductData } from "../../types/product";
 
 function UploadPage() {
   const [fileList, setFileList] = useState<IFileList[]>([]);
@@ -37,12 +38,14 @@ function UploadPage() {
 
     const product: IProductData = {
       ...data,
+      id: "",
       images,
       userId:
         userLoadable.state === "hasValue" && userLoadable.contents.id
           ? userLoadable.contents.id
           : "",
       commentListId: "",
+      createdAt: 0,
     };
 
     await uploadProduct(product);

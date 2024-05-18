@@ -10,8 +10,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { ICommentList } from "../../../types";
 import { dbService } from "../../../firebase/config";
+import { ICommentList } from "../../../types/comment";
 
 // 댓글 문서 추가
 export async function createCommentList(data: ICommentList) {

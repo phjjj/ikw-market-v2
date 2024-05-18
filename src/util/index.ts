@@ -1,5 +1,6 @@
 import { FieldErrors } from "react-hook-form";
-import { FormValues, IFileList, IUser } from "../types";
+import { FormValues, IFileList } from "../types";
+import { IUser } from "../types/user";
 
 export const checkIsLogin = (user: IUser) => {
   const sessionStorageUserId = sessionStorage.getItem("uid");
