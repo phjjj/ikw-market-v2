@@ -4,6 +4,7 @@ import UserImage from "../atoms/UserImage";
 import UserName from "../atoms/UserName";
 import Text from "../atoms/Text";
 import Date from "../atoms/Date";
+import DeleteButton from "../atoms/DeleteButton";
 
 interface Props {
   children: ReactNode;
@@ -13,6 +14,7 @@ function CommentInfo({ children }: Props) {
 }
 
 const CommentInfoContainer = styled.div`
+  position: relative;
   display: flex;
   font-size: 14px;
   gap: 10px;
@@ -23,5 +25,6 @@ CommentInfo.UserImage = UserImage;
 CommentInfo.UserName = UserName;
 CommentInfo.Text = Text;
 CommentInfo.Date = Date;
+CommentInfo.Deletebutton = DeleteButton;
 
 export default CommentInfo;
