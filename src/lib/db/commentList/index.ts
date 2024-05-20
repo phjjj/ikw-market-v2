@@ -10,6 +10,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { v4 } from "uuid";
 import { dbService } from "../../../firebase/config";
 import { ICommentList } from "../../../types/comment";
 
@@ -77,6 +78,7 @@ export async function submitComment(
       userId,
       text,
       createdAt: Timestamp.now(), // 현재 시간을 사용하여 Timestamp 생성
+      id: v4(),
     };
     comments.push(newComment);
 
@@ -84,5 +86,37 @@ export async function submitComment(
     await updateDoc(commentListDoc.ref, { comments });
   } catch (error) {
     console.error("댓글 추가 중 에러 발생:", error);
+  }
+}
+
+// 댓글 삭제
+
+export async function deleteComment(commentId: string, commentListId: string) {
+  try {
+    // 댓글 리스트 컬렉션의 문서를 가져옵니다.
+    const commentListQuery = query(
+      collection(dbService, "commentList"),
+      where("id", "==", commentListId),
+    );
+    const commentListDocs = await getDocs(commentListQuery);
+    if (commentListDocs.empty) {
+      console.error(
+        `commentListId가 ${commentListId}인 댓글 리스트를 찾을 수 없습니다.`,
+      );
+    }
+    const commentListDoc = commentListDocs.docs[0];
+    const commentListData = commentListDoc.data();
+    // 현재 댓글 배열을 가져옵니다.
+    const { comments } = commentListData;
+
+    // 댓글 리스트에서 삭제할 댓글을 제외합니다.
+    const newComments = comments.filter(
+      (comment: { id: string }) => comment.id !== commentId,
+    );
+    // 댓글 리스트 문서를 업데이트합니다.
+    await updateDoc(commentListDoc.ref, { comments: newComments });
+    console.log("댓글 삭제 성공");
+  } catch (error) {
+    console.error("댓글 삭제 중 에러 발생:", error);
   }
 }
