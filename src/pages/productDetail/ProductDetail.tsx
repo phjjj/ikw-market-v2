@@ -9,12 +9,16 @@ import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
 import { getProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
-import { submitComment } from "../../lib/db/commentList";
+import { deleteComment, submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
   const [product, setProduct] = useState<IProductData | null>(null);
+
+  // isUserItem: 사용자가 작성한 상품인지 확인하는 상태
+  const [isUserItem, setIsUserItem] = useState(false);
+  console.log(`내가 올린 상품 인가? ${isUserItem}`);
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
   const userId = useRecoilValue(userIdAtom);
@@ -33,9 +37,21 @@ function ProductDetail() {
     }
   }, [allProducts, productId]);
 
+  useEffect(() => {
+    if (product && product?.userId === userId) {
+      setIsUserItem(true);
+    }
+  }, [product, userId]);
+
   const handleSubmitComment = (text: string) => {
     submitComment(productId, text, userId);
-    console.log("댓글 제출:", text);
+  };
+
+  const handleDeleteComment = (commentId: string) => {
+    if (!product) {
+      return;
+    }
+    deleteComment(commentId, product?.commentListId);
   };
 
   return (
@@ -55,8 +71,10 @@ function ProductDetail() {
           </ProductInfo>
 
           <CommentList
+            userId={userId}
             commentData={product.comments ? product.comments.comments : []}
             onSubmitComment={handleSubmitComment}
+            handleDeleteComment={handleDeleteComment}
           />
           {/* <button
             onClick={async () => {
