@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import CommentInfo from "./molecules/CommentInfo";
 import CommentWriter from "./molecules/CommentWriter";
-import { IComments } from "../../../types";
+import { IComments } from "../../../types/comment";
 
 interface Props {
   commentData: IComments[];

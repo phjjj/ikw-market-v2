@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../../firebase/config";
-import { ICommentList, IComments, IUser } from "../../../types";
+import { ICommentList, IComments } from "../../../types/comment";
+import { IUser } from "../../../types/user";
 
 // 유저 정보 가져오기
 export async function getUser(userId: string): Promise<IUser> {
@@ -50,4 +51,11 @@ export async function getProductCommentList(commentListId: string) {
   } catch (error) {
     throw new Error(`댓글 목록을 가져오는 중 에러 발생: ${error}`);
   }
+}
+
+// 파이어베이스 문서 참조 만들어주는 함수.
+export function makeDocRef(collectionName: string, id: string) {
+  const docRef = doc(dbService, collectionName, id);
+
+  return docRef;
 }

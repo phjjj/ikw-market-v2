@@ -11,7 +11,6 @@ import {
   addDoc,
   collection,
   deleteDoc,
-  doc,
   getDoc,
   getDocs,
   query,
@@ -19,9 +18,10 @@ import {
   where,
 } from "firebase/firestore";
 import { dbService, storageService } from "../../../firebase/config";
-import { IFileList, IProductData } from "../../../types";
-import { getProductCommentList, getUser } from "./util";
+import { IFileList } from "../../../types";
+import { getProductCommentList, getUser, makeDocRef } from "./util";
 import { createCommentList } from "../commentList";
+import { IProductData } from "../../../types/product";
 
 async function fileImgUpload(fileList: IFileList[]) {
   const images: IFileList[] = [];
@@ -62,12 +62,13 @@ export async function uploadProduct(product: IProductData) {
       product,
     );
 
-    const productDocumentRef = doc(dbService, "products", productDocument.id);
+    const productDocumentRef = makeDocRef("products", productDocument.id);
 
     // 초기 commentList 컬렉션 생성 및 문서 생성.
     const commentListId = await createCommentList({
       productId: productDocumentRef.id,
       comments: [],
+      id: "",
     });
 
     await updateDoc(productDocumentRef, {
@@ -81,7 +82,7 @@ export async function uploadProduct(product: IProductData) {
 }
 
 export async function updateProduct(productId: string, product: IProductData) {
-  const productDocumentRef = doc(dbService, "products", productId);
+  const productDocumentRef = makeDocRef("products", productId);
   try {
     await updateDoc(productDocumentRef, { ...product });
   } catch (error) {
@@ -139,7 +140,7 @@ export async function getAllProducts() {
 
 // 상품 상세 조회
 export async function getProduct(productId: string) {
-  const productDocRef = doc(dbService, "products", productId);
+  const productDocRef = makeDocRef("products", productId);
   const productDocSnapshot = await getDoc(productDocRef);
 
   if (productDocSnapshot.exists()) {
@@ -160,7 +161,7 @@ export async function getProduct(productId: string) {
 
 export async function deleteProduct(productId: string, deletingUserId: string) {
   // deletingUserId 인자는 삭제하고자 하는 userId.
-  const productDocRef = doc(dbService, "products", productId);
+  const productDocRef = makeDocRef("products", productId);
 
   let productDocSnapshot: DocumentSnapshot<DocumentData, DocumentData>;
   try {
@@ -191,11 +192,7 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
       }
       try {
         if (commentListId) {
-          const commentListDocRef = doc(
-            dbService,
-            "commentList",
-            commentListId,
-          );
+          const commentListDocRef = makeDocRef("commentList", commentListId);
           await deleteDoc(commentListDocRef);
         }
       } catch (error) {

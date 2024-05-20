@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard/ProductCard";
-import { IProductData } from "../types";
+import { IProductData } from "../types/product";
 
 function ProductList({ productData }: { productData: IProductData[] }) {
   return (

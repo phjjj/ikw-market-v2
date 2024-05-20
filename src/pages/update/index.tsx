@@ -9,11 +9,12 @@ import {
   updateProduct,
   uploadProductImgFile,
 } from "../../lib/db/product";
-import { FormValues, IFileList, IProductData } from "../../types";
+import { FormValues, IFileList } from "../../types";
 import { UploadContainer } from "../upload/Upload";
 import Title from "../../components/common/atoms/Title";
 import UploadForm from "../../components/Form/upload/molecule/UploadForm";
 import { checkIsFormValidation, checkIsLogin } from "../../util";
+import { IProductData } from "../../types/product";
 
 function ProductUpdatePage() {
   const { id: productId } = useParams();
@@ -65,12 +66,15 @@ function ProductUpdatePage() {
     }
 
     const updateProductData: IProductData = {
-      ...data,
+      ...data, // 입력 받은 데이터들.
       images: fileList,
       userId:
         userLoadable.state === "hasValue" && userLoadable.contents.id
           ? userLoadable.contents.id
           : "",
+      id: product?.id || "",
+      createdAt: product?.createdAt || 0,
+      commentListId: product?.commentListId || "",
     };
 
     if (deletedImageFileRef.length > 0) {

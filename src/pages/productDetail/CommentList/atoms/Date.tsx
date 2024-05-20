@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 type DateType = {
-  body: string;
+  body: string | number;
 };
 function Date({ body }: DateType) {
   return (

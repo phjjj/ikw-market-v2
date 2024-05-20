@@ -2,9 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { IKakaoUserResultData, IUser } from "../../types";
 import { userAddDoc } from "../../lib/db/user";
 import { userIdAtom } from "../../recoil/user";
+import { IKakaoUserResultData, IUser } from "../../types/user";
 
 function LoginRedirect() {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -44,6 +44,8 @@ function LoginRedirect() {
                 kakaoId: kakaoResult.data.id,
                 name: kakaoResult.data.kakao_account.profile.nickname,
                 image: kakaoResult.data.kakao_account.profile.profile_image_url,
+                id: "",
+                createdAt: 0,
               };
               const user = await userAddDoc(userObj);
               setUserId(user.id);
