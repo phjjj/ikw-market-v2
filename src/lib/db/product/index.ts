@@ -200,4 +200,7 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
       }
     }
   }
+
+  // Add a default return statement to ensure the function returns a value
+  return { message: "Operation completed successfully", status: 200 };
 }

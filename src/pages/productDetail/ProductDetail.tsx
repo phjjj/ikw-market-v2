@@ -2,15 +2,17 @@
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
 import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
-import { getProduct } from "../../lib/db/product";
+import { deleteProduct, getProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
 import { submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
+import DefaultButton from "../../components/common/atoms/Button/DefaultButton";
+import FlexContainer from "../../components/common/molecular/Container/FlexContainer";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
@@ -38,6 +40,23 @@ function ProductDetail() {
     console.log("댓글 제출:", text);
   };
 
+  const navigate = useNavigate();
+
+  const redirect = (path: string) => {
+    navigate(path);
+  };
+
+  const updateBtnClickHandler = () => {
+    redirect("update");
+  };
+
+  const deleteBtnClickHandler = async () => {
+    const { status } = await deleteProduct(productId, userId);
+    if (status === 200) {
+      redirect("/");
+    }
+  };
+
   return (
     <ProductDetailWrapper>
       {!product ? (
@@ -54,23 +73,15 @@ function ProductDetail() {
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
 
+          <FlexContainer>
+            <DefaultButton onClick={updateBtnClickHandler}>수정</DefaultButton>
+            <DefaultButton onClick={deleteBtnClickHandler}>삭제</DefaultButton>
+          </FlexContainer>
+
           <CommentList
             commentData={product.comments ? product.comments.comments : []}
             onSubmitComment={handleSubmitComment}
           />
-          {/* <button
-            onClick={async () => {
-              if (product?.id) {
-                await deleteProduct(product.id, "ZBIqGwPZucIje7LY6aYT");
-              } else {
-                console.error("Product ID is undefined");
-              }
-            }}
-          >
-            삭제하기
-          </button> */}
-
-          {/* <CommentList commentData={product.commentList} /> */}
         </>
       )}
     </ProductDetailWrapper>
