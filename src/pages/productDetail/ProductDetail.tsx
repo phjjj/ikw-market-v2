@@ -51,9 +51,13 @@ function ProductDetail() {
   };
 
   const deleteBtnClickHandler = async () => {
-    const { status } = await deleteProduct(productId, userId);
-    if (status === 200) {
+    try {
+      await deleteProduct(productId, userId);
       redirect("/");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
   };
 
