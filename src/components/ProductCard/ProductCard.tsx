@@ -8,18 +8,25 @@ import ProductImage from "../common/atoms/ProductImage";
 
 interface Props {
   children: ReactNode;
+  isSale: boolean;
 }
 
-function ProductCard({ children }: Props) {
-  return <ProductCardContainer>{children}</ProductCardContainer>;
+function ProductCard({ children, isSale }: Props) {
+  return (
+    <ProductCardContainer $isSale={isSale}>{children}</ProductCardContainer>
+  );
 }
 
-const ProductCardContainer = styled.li`
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border-radius: 10px;
-  list-style: none;
-`;
+const ProductCardContainer = styled.li<{ $isSale?: boolean }>(
+  ({ $isSale }) => ({
+    position: "relative",
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+    borderRadius: "10px",
+    listStyle: "none",
+    backgroundColor: $isSale ? "transparent" : "rgba(0, 0, 0, 0.5)",
+    color: $isSale ? "#000000" : "#FFFFFF",
+  }),
+);
 
 ProductCard.Image = ProductImage;
 ProductCard.Info = Info;

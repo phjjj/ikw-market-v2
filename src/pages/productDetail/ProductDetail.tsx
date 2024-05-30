@@ -7,12 +7,13 @@ import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
 import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
-import { deleteProduct, getProduct } from "../../lib/db/product";
+import { deleteProduct, getProduct, updateProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
 import { submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
 import DefaultButton from "../../components/common/atoms/Button/DefaultButton";
 import FlexContainer from "../../components/common/molecular/Container/FlexContainer";
+import { LargeTitleWrapper } from "../../components/common/atoms/Title/index.style";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
@@ -61,6 +62,22 @@ function ProductDetail() {
     }
   };
 
+  // 판매 완료 버튼 핸들러
+  const completeSaleHandler = async () => {
+    if (!product || !product.id) {
+      alert("Product data is incomplete.");
+      return;
+    }
+    try {
+      await updateProduct(productId, { ...product, isSale: false });
+      redirect("/");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
   return (
     <ProductDetailWrapper>
       {!product ? (
@@ -77,10 +94,21 @@ function ProductDetail() {
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
 
-          <FlexContainer>
-            <DefaultButton onClick={updateBtnClickHandler}>수정</DefaultButton>
-            <DefaultButton onClick={deleteBtnClickHandler}>삭제</DefaultButton>
-          </FlexContainer>
+          {product.isSale ? (
+            <FlexContainer>
+              <DefaultButton onClick={updateBtnClickHandler}>
+                수정
+              </DefaultButton>
+              <DefaultButton onClick={deleteBtnClickHandler}>
+                삭제
+              </DefaultButton>
+              <DefaultButton onClick={completeSaleHandler}>
+                판매완료
+              </DefaultButton>
+            </FlexContainer>
+          ) : (
+            <LargeTitleWrapper>판매완료</LargeTitleWrapper>
+          )}
 
           <CommentList
             commentData={product.comments ? product.comments.comments : []}

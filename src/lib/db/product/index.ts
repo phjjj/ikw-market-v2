@@ -13,6 +13,7 @@ import {
   deleteDoc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -118,7 +119,11 @@ export async function getUserProducts(userId: string) {
 
 // 전체 상품 조회
 export async function getAllProducts() {
-  const productQuery = query(collection(dbService, "products"));
+  const productQuery = query(
+    collection(dbService, "products"),
+    orderBy("isSale", "desc"), // 해당 상품 isSale true 값 기준으로 내림차순
+    orderBy("createdAt", "desc"), // 해당 상품 createdAt 내림차순
+  );
   const productsSnapshot = await getDocs(productQuery);
   const productsData: IProductData[] = [];
 
