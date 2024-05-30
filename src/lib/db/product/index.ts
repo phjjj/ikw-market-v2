@@ -13,10 +13,12 @@ import {
   deleteDoc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
+
 import { dbService, storageService } from "../../../firebase/config";
 import { IFileList } from "../../../types";
 import { getProductCommentList, getUser, makeDocRef } from "./util";
@@ -117,7 +119,11 @@ export async function getUserProducts(userId: string) {
 
 // 전체 상품 조회
 export async function getAllProducts() {
-  const productQuery = query(collection(dbService, "products"));
+  const productQuery = query(
+    collection(dbService, "products"),
+    orderBy("isSale", "desc"), // 해당 상품 isSale true 값 기준으로 내림차순
+    orderBy("createdAt", "desc"), // 해당 상품 createdAt 내림차순
+  );
   const productsSnapshot = await getDocs(productQuery);
   const productsData: IProductData[] = [];
 
@@ -198,6 +204,8 @@ export async function deleteProduct(productId: string, deletingUserId: string) {
       } catch (error) {
         throw new Error(`해당 CommentList 문서 삭제 요청 에러 : ${error}`);
       }
+    } else {
+      throw new Error("삭제 에러");
     }
   }
 }

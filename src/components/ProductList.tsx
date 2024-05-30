@@ -7,7 +7,7 @@ function ProductList({ productData }: { productData: IProductData[] }) {
   return (
     <ProductListWrapper>
       {productData.map((product) => (
-        <ProductCard key={product.id}>
+        <ProductCard key={product.id} isSale={product.isSale}>
           <Link to={`/products/${product.id}`}>
             <ProductCard.Image
               className="sm"
@@ -22,6 +22,7 @@ function ProductList({ productData }: { productData: IProductData[] }) {
             <ProductCard.Name body={product.title} />
             <ProductCard.Price body={product.price} />
             <ProductCard.Location body={product.location} />
+            {!product.isSale && "판매완료"}
           </ProductCard.Info>
         </ProductCard>
       ))}

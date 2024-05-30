@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 interface Props {
   children: ReactNode;
+  onClick?: () => void;
 }
 
-function DefaultButton({ children }: Props) {
-  return <Wrapper>{children}</Wrapper>;
+function DefaultButton({ children, onClick }: Props) {
+  return <Wrapper onClick={onClick}>{children}</Wrapper>;
 }
 
 const Wrapper = styled.button`

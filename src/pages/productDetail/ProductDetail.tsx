@@ -2,15 +2,18 @@
 import styled from "styled-components";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductInfo from "./ProductInfo/ProductInfo";
 import UserName from "./UserName/UserName";
 import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
-import { getProduct } from "../../lib/db/product";
+import { deleteProduct, getProduct, updateProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
 import { submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
+import DefaultButton from "../../components/common/atoms/Button/DefaultButton";
+import FlexContainer from "../../components/common/molecular/Container/FlexContainer";
+import { LargeTitleWrapper } from "../../components/common/atoms/Title/index.style";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
@@ -38,6 +41,43 @@ function ProductDetail() {
     console.log("댓글 제출:", text);
   };
 
+  const navigate = useNavigate();
+
+  const redirect = (path: string) => {
+    navigate(path);
+  };
+
+  const updateBtnClickHandler = () => {
+    redirect("update");
+  };
+
+  const deleteBtnClickHandler = async () => {
+    try {
+      await deleteProduct(productId, userId);
+      redirect("/");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
+  // 판매 완료 버튼 핸들러
+  const completeSaleHandler = async () => {
+    if (!product || !product.id) {
+      alert("Product data is incomplete.");
+      return;
+    }
+    try {
+      await updateProduct(productId, { ...product, isSale: false });
+      redirect("/");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
   return (
     <ProductDetailWrapper>
       {!product ? (
@@ -54,23 +94,26 @@ function ProductDetail() {
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
 
+          {product.isSale ? (
+            <FlexContainer>
+              <DefaultButton onClick={updateBtnClickHandler}>
+                수정
+              </DefaultButton>
+              <DefaultButton onClick={deleteBtnClickHandler}>
+                삭제
+              </DefaultButton>
+              <DefaultButton onClick={completeSaleHandler}>
+                판매완료
+              </DefaultButton>
+            </FlexContainer>
+          ) : (
+            <LargeTitleWrapper>판매완료</LargeTitleWrapper>
+          )}
+
           <CommentList
             commentData={product.comments ? product.comments.comments : []}
             onSubmitComment={handleSubmitComment}
           />
-          {/* <button
-            onClick={async () => {
-              if (product?.id) {
-                await deleteProduct(product.id, "ZBIqGwPZucIje7LY6aYT");
-              } else {
-                console.error("Product ID is undefined");
-              }
-            }}
-          >
-            삭제하기
-          </button> */}
-
-          {/* <CommentList commentData={product.commentList} /> */}
         </>
       )}
     </ProductDetailWrapper>
