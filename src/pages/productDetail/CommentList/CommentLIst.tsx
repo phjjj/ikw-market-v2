@@ -7,9 +7,16 @@ import { IComments } from "../../../types/comment";
 interface Props {
   commentData: IComments[];
   onSubmitComment: (text: string) => void;
+  userId: string;
+  handleDeleteComment: (commentId: string) => void;
 }
 
-function CommentList({ commentData, onSubmitComment }: Props) {
+function CommentList({
+  commentData,
+  onSubmitComment,
+  userId,
+  handleDeleteComment,
+}: Props) {
   return (
     <CommentListContainer>
       <div>
@@ -22,6 +29,11 @@ function CommentList({ commentData, onSubmitComment }: Props) {
             <CommentInfo.UserName body={comment.userName} />
             <CommentInfo.Text body={comment.text} />
             <CommentInfo.Date body={comment.createdAt} />
+            {comment.userId === userId && (
+              <CommentInfo.DeleteButton
+                onClick={() => handleDeleteComment(comment.id)}
+              />
+            )}
           </div>
         </CommentInfo>
       ))}

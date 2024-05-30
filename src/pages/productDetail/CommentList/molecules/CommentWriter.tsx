@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface Props {
   onSubmit: (text: string) => void;
+  // onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement> | undefined;
 }
 
 function CommentWriter({ onSubmit }: Props) {
@@ -17,12 +18,21 @@ function CommentWriter({ onSubmit }: Props) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      if (e.nativeEvent.isComposing) return;
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return (
     <CommentWriterContainer onSubmit={handleSubmit}>
       <TextArea
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="댓글 작성하기"
+        onKeyDown={handleKeyDown}
       />
       <Button type="submit">등록</Button>
     </CommentWriterContainer>

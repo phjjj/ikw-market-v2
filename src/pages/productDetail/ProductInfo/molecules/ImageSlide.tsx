@@ -12,7 +12,6 @@ type ImageType = {
 };
 
 function Image({ images }: ImageType) {
-  console.log(images);
   const [visibel, setVisibel] = useState(0);
 
   const onClickNextImage = () =>
