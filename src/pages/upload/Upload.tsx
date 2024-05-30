@@ -46,6 +46,7 @@ function UploadPage() {
           : "",
       commentListId: "",
       createdAt: 0,
+      isSale: true,
     };
 
     await uploadProduct(product);

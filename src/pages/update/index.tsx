@@ -75,6 +75,7 @@ function ProductUpdatePage() {
       id: product?.id || "",
       createdAt: product?.createdAt || 0,
       commentListId: product?.commentListId || "",
+      isSale: true,
     };
 
     if (deletedImageFileRef.length > 0) {
