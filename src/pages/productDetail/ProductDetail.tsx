@@ -36,9 +36,10 @@ function ProductDetail() {
     }
   }, [allProducts, productId]);
 
-  const handleSubmitComment = (text: string) => {
+  const handleSubmitComment = async (text: string) => {
     submitComment(productId, text, userId);
-    console.log("댓글 제출:", text);
+    const updatedProduct = await getProduct(productId);
+    setProduct(updatedProduct);
   };
 
   const navigate = useNavigate();

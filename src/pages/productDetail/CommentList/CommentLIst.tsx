@@ -16,7 +16,7 @@ function CommentList({ commentData, onSubmitComment }: Props) {
         <h3>댓글</h3>
       </div>
       {commentData.map((comment) => (
-        <CommentInfo key={comment.userId}>
+        <CommentInfo key={comment.id}>
           <CommentInfo.UserImage image={comment.userImage} />
           <div>
             <CommentInfo.UserName body={comment.userName} />

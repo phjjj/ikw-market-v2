@@ -10,6 +10,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { v4 } from "uuid";
 import { dbService } from "../../../firebase/config";
 import { ICommentList } from "../../../types/comment";
 
@@ -77,6 +78,7 @@ export async function submitComment(
       userId,
       text,
       createdAt: Timestamp.now(), // 현재 시간을 사용하여 Timestamp 생성
+      id: v4(),
     };
     comments.push(newComment);
 
