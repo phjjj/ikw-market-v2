@@ -37,7 +37,7 @@ function CommentList({
           </div>
         </CommentInfo>
       ))}
-      <CommentWriter onSubmit={onSubmitComment} />
+      <CommentWriter userId={userId} onSubmit={onSubmitComment} />
     </CommentListContainer>
   );
 }
