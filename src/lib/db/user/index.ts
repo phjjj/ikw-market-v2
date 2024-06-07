@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { dbService } from "../../../firebase/config";
 import { IUser } from "../../../types/user";
+import { makeDocRef } from "../product/util";
 
 export async function checkUser(kakaoId: number): Promise<IUser | null> {
   const userQuery = query(
@@ -68,5 +69,15 @@ export async function getUserDoc(identifier: string): Promise<IUser> {
     throw new Error(`유저 정보를 찾을 수 없습니다.${identifier}`);
   } catch (error) {
     throw new Error(`Error retrieving user document: ${error}`);
+  }
+}
+
+// 유저(프로필) 업데이트
+export async function updateUser(userId: string, name: string) {
+  const productDocumentRef = makeDocRef("users", userId);
+  try {
+    await updateDoc(productDocumentRef, { name });
+  } catch (error) {
+    console.log("Firestore 상품 업데이트 통신 에러 : ", error);
   }
 }
