@@ -4,9 +4,10 @@ import { useState } from "react";
 
 interface Props {
   onSubmit: (text: string) => void;
+  userId: string;
 }
 
-function CommentWriter({ onSubmit }: Props) {
+function CommentWriter({ onSubmit, userId }: Props) {
   const [text, setText] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,14 +18,30 @@ function CommentWriter({ onSubmit }: Props) {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      if (e.nativeEvent.isComposing) return;
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return (
     <CommentWriterContainer onSubmit={handleSubmit}>
       <TextArea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="댓글 작성하기"
+        placeholder={
+          userId
+            ? "댓글을 입력해주세요."
+            : "로그인 후 댓글을 작성할 수 있습니다."
+        }
+        onKeyDown={handleKeyDown}
+        disabled={!userId}
       />
-      <Button type="submit">등록</Button>
+      <Button type="submit" disabled={!userId}>
+        등록
+      </Button>
     </CommentWriterContainer>
   );
 }

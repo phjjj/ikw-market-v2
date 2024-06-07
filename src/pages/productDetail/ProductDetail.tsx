@@ -9,7 +9,7 @@ import Image from "./ProductInfo/molecules/ImageSlide";
 import CommentList from "./CommentList/CommentLIst";
 import { deleteProduct, getProduct, updateProduct } from "../../lib/db/product";
 import { allProductsAtom, userIdAtom } from "../../recoil/user";
-import { submitComment } from "../../lib/db/commentList";
+import { deleteComment, submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
 import DefaultButton from "../../components/common/atoms/Button/DefaultButton";
 import FlexContainer from "../../components/common/molecular/Container/FlexContainer";
@@ -36,9 +36,19 @@ function ProductDetail() {
     }
   }, [allProducts, productId]);
 
-  const handleSubmitComment = (text: string) => {
+  const handleSubmitComment = async (text: string) => {
     submitComment(productId, text, userId);
-    console.log("댓글 제출:", text);
+    const updatedProduct = await getProduct(productId);
+    setProduct(updatedProduct);
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!product) {
+      return;
+    }
+    await deleteComment(commentId, product?.commentListId);
+    const updatedProduct = await getProduct(productId);
+    setProduct(updatedProduct);
   };
 
   const navigate = useNavigate();
@@ -94,6 +104,9 @@ function ProductDetail() {
             <ProductInfo.Description body={product.description} />
           </ProductInfo>
 
+          {/* 판매완료는 삼항연산자로 image에 추가 해야하고
+              내 정보일 경우 수정 삭제 판매완료 버튼이 보여야함
+              두개 분리해야함 */}
           {product.isSale ? (
             <FlexContainer>
               <DefaultButton onClick={updateBtnClickHandler}>
@@ -111,6 +124,8 @@ function ProductDetail() {
           )}
 
           <CommentList
+            userId={userId}
+            handleDeleteComment={handleDeleteComment}
             commentData={product.comments ? product.comments.comments : []}
             onSubmitComment={handleSubmitComment}
           />
