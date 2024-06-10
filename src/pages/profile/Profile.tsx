@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useRecoilValueLoadable } from "recoil";
+import { useLocation, useNavigate } from "react-router-dom";
 import UserInfo from "./molecules/UserInfo";
 import ProductList from "../../components/ProductList";
 import Title from "../../components/common/atoms/Title";
@@ -10,6 +11,7 @@ import { IProductData } from "../../types/product";
 import { IUser } from "../../types/user";
 import NameEditForm from "./molecules/NameEditForm";
 import { updateUser } from "../../lib/db/user";
+import { checkIsLogin } from "../../util";
 
 function ProfilePage() {
   const userSelectorLoadable = useRecoilValueLoadable(userSelector);
@@ -22,8 +24,13 @@ function ProfilePage() {
     createdAt: 0,
   });
   const [isEditingProfile, setIsEditingProfile] = useState(false); // 프로필 수정 중인지 여부를 추적
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    if (!checkIsLogin(userSelectorLoadable.contents)) {
+      navigate("/login", { state: { path: location.pathname } });
+    }
     async function fetchData() {
       if (userSelectorLoadable.state === "hasValue") {
         const userData = userSelectorLoadable.contents;

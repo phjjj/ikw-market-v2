@@ -13,7 +13,6 @@ import { deleteComment, submitComment } from "../../lib/db/commentList";
 import { IProductData } from "../../types/product";
 import DefaultButton from "../../components/common/atoms/Button/DefaultButton";
 import FlexContainer from "../../components/common/molecular/Container/FlexContainer";
-import { LargeTitleWrapper } from "../../components/common/atoms/Title/index.style";
 
 function ProductDetail() {
   const allProducts = useRecoilValue(allProductsAtom);
@@ -21,6 +20,7 @@ function ProductDetail() {
   const location = useLocation();
   const productId = location.pathname.split("/")[2];
   const userId = useRecoilValue(userIdAtom);
+
   useEffect(() => {
     if (allProducts.length) {
       const productData = allProducts.find((p) => p.id === productId);
@@ -88,6 +88,20 @@ function ProductDetail() {
     }
   };
 
+  // 해당 상품 수정, 삭제, 판매완료 버튼 컨트롤러 렌더링 콘텐츠.
+  const renderProductControler = () => {
+    if (product && product.isSale && userId === product.userId) {
+      return (
+        <FlexContainer>
+          <DefaultButton onClick={updateBtnClickHandler}>수정</DefaultButton>
+          <DefaultButton onClick={deleteBtnClickHandler}>삭제</DefaultButton>
+          <DefaultButton onClick={completeSaleHandler}>판매완료</DefaultButton>
+        </FlexContainer>
+      );
+    }
+    return null;
+  };
+
   return (
     <ProductDetailWrapper>
       {!product ? (
@@ -107,21 +121,7 @@ function ProductDetail() {
           {/* 판매완료는 삼항연산자로 image에 추가 해야하고
               내 정보일 경우 수정 삭제 판매완료 버튼이 보여야함
               두개 분리해야함 */}
-          {product.isSale ? (
-            <FlexContainer>
-              <DefaultButton onClick={updateBtnClickHandler}>
-                수정
-              </DefaultButton>
-              <DefaultButton onClick={deleteBtnClickHandler}>
-                삭제
-              </DefaultButton>
-              <DefaultButton onClick={completeSaleHandler}>
-                판매완료
-              </DefaultButton>
-            </FlexContainer>
-          ) : (
-            <LargeTitleWrapper>판매완료</LargeTitleWrapper>
-          )}
+          {renderProductControler()}
 
           <CommentList
             userId={userId}
